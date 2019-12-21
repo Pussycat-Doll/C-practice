@@ -1,0 +1,9 @@
+﻿  test.cpp
+d:\比特科技\比特代码\函数模板\string\test.cpp(13): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+          d:\比特科技\比特代码\函数模板\string\test.cpp(28): 参见对正在编译的函数 模板 实例化“void Swap<int,double>(T1 &,T2 &)”的引用
+          with
+          [
+              T1=int
+  ,            T2=double
+          ]
+  string.vcxproj -> D:\比特科技\比特代码\函数模板\Debug\string.exe
