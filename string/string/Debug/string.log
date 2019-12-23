@@ -1,0 +1,3 @@
+﻿  源.cpp
+d:\比特科技\比特代码\string\string\源.cpp(311): warning C4520: “cat::string”: 指定了多个默认构造函数
+  string.vcxproj -> D:\比特科技\比特代码\string\Debug\string.exe
