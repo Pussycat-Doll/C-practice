@@ -1,0 +1,3 @@
+﻿  vector.cpp
+d:\比特科技\比特代码\my_vector\my_vector\vector.cpp(157): warning C4018: “<”: 有符号/无符号不匹配
+  my_vector.vcxproj -> D:\比特科技\比特代码\my_vector\Debug\my_vector.exe
