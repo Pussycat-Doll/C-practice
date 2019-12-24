@@ -1,0 +1,12 @@
+﻿  源.cpp
+d:\比特科技\比特代码\my_list\my_list\源.cpp(114): error C2143: 语法错误 : 缺少“;”(在“void”的前面)
+d:\比特科技\比特代码\my_list\my_list\源.cpp(25): error C2976: “qwq::__list_iterator”: 模板 参数太少
+          d:\比特科技\比特代码\my_list\my_list\源.cpp(24) : 参见“qwq::__list_iterator”的声明
+          d:\比特科技\比特代码\my_list\my_list\源.cpp(114): 参见对正在编译的类 模板 实例化“qwq::__list_iterator<T,Ref,Ptr>”的引用
+d:\比特科技\比特代码\my_list\my_list\源.cpp(61): error C2059: 语法错误:“,”
+          d:\比特科技\比特代码\my_list\my_list\源.cpp(100): 参见对正在编译的类 模板 实例化“qwq::__list_iterator<T,Ref,Ptr>::list<T>”的引用
+d:\比特科技\比特代码\my_list\my_list\源.cpp(61): error C2238: 意外的标记位于“;”之前
+d:\比特科技\比特代码\my_list\my_list\源.cpp(121): error C3861: “print_list”:  找不到标识符
+d:\比特科技\比特代码\my_list\my_list\源.cpp(123): error C2601: “main”: 本地函数定义是非法的
+          d:\比特科技\比特代码\my_list\my_list\源.cpp(115):  此行有一个“{”没有匹配项
+d:\比特科技\比特代码\my_list\my_list\源.cpp(128): fatal error C1075: 与左侧的 大括号“{”(位于“d:\比特科技\比特代码\my_list\my_list\源.cpp(115)”)匹配之前遇到文件结束
