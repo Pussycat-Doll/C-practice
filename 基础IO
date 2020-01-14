@@ -1,0 +1,17 @@
+基础IO:
+	回顾标准库IO接口：
+	fopen：模式--
+				  r--只读、
+				  r+-可读可写、
+				  w--(覆盖)只写、文件不存在则创建
+				  w+-(覆盖)可读文写、文件不存在则创建
+				  a--追加写、文件不存在则创建
+				  a+-可读、追加写、文件不存在则创建，
+					 读的初始位置在文件起始，写得起始位置在文件末尾
+	size_t fwrite(const void *ptr, size_t size, size_t nmemb,FILE *stream);
+	//nmemb 块个数   size  块大小
+
+	fclose \ fwrite \ fread \ fseek(跳转读写位置) 
+	fgets(获取一行数据)\ fprintf (向文件中格式化写入数据)\ sscanf
+		
+	stdout\stdin\stderr  FILE*
