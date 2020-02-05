@@ -7,7 +7,8 @@ void UnitThreadCache()
 	ThreadCache tc;
 	vector<void* > v;
 	for (size_t i = 0; i < 21; ++i)
-	//为什么要申请21次内存？(num==20)让程序运行的时候既走if语句，也走一else语句，都试试(白盒测试)
+	//为什么要申请21次内存？
+		//(num==20)让程序运行的时候既走if语句，也走一else语句，都试试(白盒测试)
 	{
 		v.push_back(tc.Allocte(7));//申请7个字节
 	}
