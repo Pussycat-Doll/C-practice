@@ -8,7 +8,8 @@ public:
 	{
 		_start = _end = (char* )malloc(InitNum*sizeof(T));
 	}
-	T* New()//申请一个对象出来
+	T* New()
+	//申请一个对象出来
 	{
 		if (_start == _end)
 			_start = _end = (char*)malloc(InitNum*sizeof(T));
