@@ -91,7 +91,8 @@ void test_map_set2()
 	map<string, int> count_fruit;
 	for (auto e : strs)
 	{
-		pair<map<string, int>::iterator, bool> ret = count_fruit.insert(make_pair(e, 1));
+		auto ret = count_fruit.insert(make_pair(e, 1));
+		//pair<map<string, int>::iterator, bool> ret = count_fruit.insert(make_pair(e, 1));
 		if (ret.second == false)//插入失败，表示该值已存在
 			ret.first->second++;
 	}
