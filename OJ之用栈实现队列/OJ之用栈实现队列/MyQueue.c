@@ -1,7 +1,6 @@
-#define _CRT_SECURE_NO_WARNINGS 1
+
 #include"MyQueue.h"
 /** Initialize your data structure here.生成队列 */
-
 MyQueue* myQueueCreate() {
 	MyQueue* queue = (MyQueue*)malloc(sizeof(MyQueue));
 	return queue;
@@ -27,7 +26,6 @@ int myQueuePop(MyQueue* obj) {
 	StackPop(&(obj->_popst));
 	return top;
 }
-
 /** Get the front element. */
 int myQueuePeek(MyQueue* obj)
 {
