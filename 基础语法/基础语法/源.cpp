@@ -102,33 +102,105 @@
 //函数命名修饰规则
 
 //引用
+//#include<iostream>
+//using namespace std;
+//int main()
+//{
+//	//int a = 99;
+//	//int& ra = a;//表示ra是a的别名,共用一块空间
+//	//cout << "a = " << a << &a << endl;
+//	//cout << "ra = " << ra << &ra << endl;
+//	/*1、引用必须在定义的时候初始化
+//	  2、一个变量可以有多个引用
+//	  3、引用一旦引用一个实体，就不能引用其他实体*/
+//
+//	//常引用
+//	const int a = 99;
+//	//int& b = a;//编译不通过，原因：a是只读，b是可读可写的
+//	const int& b = a;
+//
+//	int c = 100;
+//	int& d = c;
+//	const int& e = c;//c 是可读可写，e是只读
+//	//总结：变量的权限只可以缩小，不能扩大
+//
+//	int i = 0;
+//	double db = i;//隐式类型转换
+//	const double& rd = i;
+//	// 隐式类型转换产生了一个double的临时变量
+//	//rd 引用的就是临时变量，临时变量具有常性
+//
+//	const int x = 99;
+//	int y = x;//y的修改不影响x,这是一个普通的赋值的过程
+//
+//	int h = 89;
+//	const int gg = h;//道理同上
+//
+//	//权限的缩小只适用引用和指针
+//
+//	/*const int* cp1 = &a;
+//	int* p1 = cp1;*///不能通过编译，属于权限的放大
+//
+//	int* p2 = &h;
+//	const int* cp2 = p2;//属于权限的缩小
+//
+//	return 0; 
+//}
+
+//引用的使用场景：1、作参数
+//				  2、引用作返回值
+
+//#include<iostream>
+//using namespace std;
+//
+//void swap_c(int *p1, int *p2)
+//{
+//	int tmp = *p1;
+//	*p1 = *p2;
+//	*p2 = tmp;
+//}
+//
+//void swap(int& a, int& b)
+//{
+//	int tmp = a;
+//	a = b;
+//	b = tmp;
+//}
+//
+//int main()
+//{
+//	int a = 1,b = 99;
+//	swap_c(&a, &b);
+//	swap(a,b);
+//	return 0;
+//}
+
 #include<iostream>
 using namespace std;
-int main()
+
+int Count1()//传值返回
 {
-	//int a = 99;
-	//int& ra = a;//表示ra是a的别名,共用一块空间
-	//cout << "a = " << a << &a << endl;
-	//cout << "ra = " << ra << &ra << endl;
-	/*1、引用必须在定义的时候初始化
-	  2、一个变量可以有多个引用
-	  3、引用一旦引用一个实体，就不能引用其他实体*/
+    static int n = 0;
+    n++;
 
-	//常引用
-	const int a = 99;
-	//int& b = a;//编译不通过，原因：a是只读，b是可读可写的
-	const int& b = a;
-
-	int c = 100;
-	int& d = c;
-	const int& e = c;//c 是可读可写，e是只读
-	//总结：变量的权限只可以缩小，不能扩大
-
-	int i = 0;
-	double db = i;//隐式类型转换
-	const double& rd = i;
-	// 隐式类型转换产生了一个double的临时变量
-	//rd 引用的就是临时变量，临时变量具有常性
-	return 0;
+    return n;
+    //临时变量会多开一块空间
 }
 
+int& Count2()//传引用返回
+{
+    static int m = 0;
+    m++;
+
+    return m;
+    //临时变量是m的别名，不会再开一块空间
+}
+
+int main()
+{
+    //int& r1 = Count1();编译不通过，Count1的返回值会产生一个临时变量，具有常性，是只读的
+    const int& r1 = Count1();
+    int& r2 = Count2();//Count2的返回值返回的是n的别名，是可读可写的，权限没有发生改变
+    return 0;
+ }
+//
