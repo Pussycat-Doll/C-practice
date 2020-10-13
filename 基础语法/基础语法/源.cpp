@@ -175,32 +175,138 @@
 //	return 0;
 //}
 
+//#include<iostream>
+//using namespace std;
+//
+//int Count1()//传值返回
+//{
+//    static int n = 0;
+//    n++;
+//
+//    return n;
+//    //临时变量会多开一块空间
+//}
+//
+//int& Count2()//传引用返回
+//{
+//    static int m = 0;
+//    m++;
+//
+//    return m;
+//    //临时变量是m的别名，不会再开一块空间
+//}
+//
+//int main()
+//{
+//    //int& r1 = Count1();编译不通过，Count1的返回值会产生一个临时变量，具有常性，是只读的
+//    const int& r1 = Count1();
+//    int& r2 = Count2();//Count2的返回值返回的是n的别名，是可读可写的，权限没有发生改变
+//    return 0;
+// }
+
 #include<iostream>
+#include<map>
 using namespace std;
 
-int Count1()//传值返回
+//int main()
+//{
+//	//int a = 10;
+//	//int& b = a;//引用必须初始化,用反汇编查看，可以看出引用的底层实现实际跟指针差不多
+//
+//	//int* p = &a;//指针没有要求
+//
+//	char c1 = 0;
+//	char& c2 = c1;
+//	char* p3 = &c1;
+//	cout << sizeof(c2) << endl;//结果为1
+//	cout << sizeof(p3) << endl;//结果为4
+//	return 0;
+//}
+
+//int ADD(int left, int right)
+//{
+//	return left + right;
+//}
+//
+//inline void swap(int& a, int& b)
+//{
+//	int tmp = a;
+//	a = b;
+//	b = tmp;
+//}
+////频繁调用SWAP函数是有消耗的
+////解决方案：1、C语言使用宏函数
+////2、C++使用内联函数解决(用空间换时间，不用调用栈帧了，一般适用于小函数
+////例如20行以下，递归函数什么的)
+//int main()
+//{
+//	int ret = ADD(1, 2);
+//	int a = 99, b = 90;
+//	swap(a, b);
+//}
+
+//void TestFor(int arr[])
+//	{
+//		for (auto& arr)//编译不通过，因为数组在传参过程中会转化成指针
+//		{
+//			cout << e << endl;
+//		}
+//	}
+
+void fun(int n)
 {
-    static int n = 0;
-    n++;
-
-    return n;
-    //临时变量会多开一块空间
+	cout << "整型" << endl;
 }
-
-int& Count2()//传引用返回
+void fun(int* p)
 {
-    static int m = 0;
-    m++;
-
-    return m;
-    //临时变量是m的别名，不会再开一块空间
+	cout << "整型指针" << endl;
 }
-
 int main()
 {
-    //int& r1 = Count1();编译不通过，Count1的返回值会产生一个临时变量，具有常性，是只读的
-    const int& r1 = Count1();
-    int& r2 = Count2();//Count2的返回值返回的是n的别名，是可读可写的，权限没有发生改变
-    return 0;
- }
-//
+	////auto 不能做参数，数组也不可
+	//int a = 0;
+	//auto b = a;//b的类型是根据a的类型自动推导的
+	//int& c = a;
+	//auto& d = a;
+	//auto e = &a;
+
+	//cout << typeid(a).name() << endl;
+	//cout << typeid(b).name() << endl;
+	//cout << typeid(c).name() << endl;
+	//cout << typeid(d).name() << endl;
+	//cout << typeid(e).name() << endl;
+
+	//std::map<std::string, std::string> dict;
+	//std::map<std::string, std::string>::iterator it1 = dict.begin();
+	//auto it1 = dict.begin();
+	//map<string, string> dict;
+
+	//int array[] = { 1,2,3,4,5 };
+	//for (int i = 0; i < sizeof(array) / sizeof(int); ++i)
+	//{
+	//	cout << array[i] << " ";
+	//}
+	//cout << endl;
+	////C++11->范围for(语法糖)---》特点：写起来比较简洁
+	//for (auto& e : array)//只是把数组中的每一个元素赋值给E，E的改变并不影响数组中元素的改变
+	//	//所以要改变数组中的值就应该加上引用
+	//{
+	//	e *= 2;
+	//	cout << e << " ";
+	//}
+	//cout << endl;
+	//for (auto& e : array)
+	//{
+	//	cout << e << " ";
+	//}
+
+	int* p1 = NULL;
+	int* p2 = nullptr;//C++推荐用这个
+	fun(0);
+	fun(NULL);//匹配到int的参数，因为在底层NULL实际是一个宏
+	//#define NULL 0
+	//#define NULL (void*)
+	//预处理后 fun(0)
+	fun(nullptr);//fun((void*)0)
+	return 0;
+}
