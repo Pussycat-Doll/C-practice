@@ -253,16 +253,16 @@ using namespace std;
 //		}
 //	}
 
-void fun(int n)
-{
-	cout << "整型" << endl;
-}
-void fun(int* p)
-{
-	cout << "整型指针" << endl;
-}
-int main()
-{
+//void fun(int n)
+//{
+//	cout << "整型" << endl;
+//}
+//void fun(int* p)
+//{
+//	cout << "整型指针" << endl;
+//}
+//int main()
+//{
 	////auto 不能做参数，数组也不可
 	//int a = 0;
 	//auto b = a;//b的类型是根据a的类型自动推导的
@@ -300,13 +300,30 @@ int main()
 	//	cout << e << " ";
 	//}
 
-	int* p1 = NULL;
-	int* p2 = nullptr;//C++推荐用这个
-	fun(0);
-	fun(NULL);//匹配到int的参数，因为在底层NULL实际是一个宏
-	//#define NULL 0
-	//#define NULL (void*)
-	//预处理后 fun(0)
-	fun(nullptr);//fun((void*)0)
-	return 0;
+//	int* p1 = NULL;
+//	int* p2 = nullptr;//C++推荐用这个
+//	fun(0);
+//	fun(NULL);//匹配到int的参数，因为在底层NULL实际是一个宏
+//	//#define NULL 0
+//	//#define NULL (void*)
+//	//预处理后 fun(0)
+//	fun(nullptr);//fun((void*)0)
+//	return 0;
+//}
+
+int Add(int a, int b)
+{
+	static int ret = a + b;
+	return ret;
+}
+int& Add2(int a, int b)
+{
+	static int ret = a + b;
+	return ret;
+}
+int main()
+{
+	int& res = Add(1, 2);
+	Add(3, 4);
+	cout << res << endl;
 }
