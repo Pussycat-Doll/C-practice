@@ -1,0 +1,3 @@
+﻿  Date.cpp
+D:\github\待提交\Date\Date\Date.cpp(59): warning C4715: “Date::getmonthday”: 不是所有的控件路径都返回值
+  Date.vcxproj -> D:\github\待提交\Date\Debug\Date.exe
