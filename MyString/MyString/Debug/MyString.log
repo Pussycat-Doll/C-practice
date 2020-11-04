@@ -1,2 +1,4 @@
 ﻿  test.cpp
-  MyString.vcxproj -> D:\github\待提交\MyString\Debug\MyString.exe
+D:\github\C-practice\MyString\MyString\string.h(473,21): error C2664: “MyString::string &MyString::string::insert(size_t,char *)”: 无法将参数 2 从“const char [4]”转换为“char *”
+D:\github\C-practice\MyString\MyString\string.h(473,16): message : 从字符串文本转换将丢失 const 限定符(请参阅 /Zc:strictStrings)
+D:\github\C-practice\MyString\MyString\string.h(267,11): message : 参见“MyString::string::insert”的声明

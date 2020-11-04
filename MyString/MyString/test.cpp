@@ -5,7 +5,9 @@
 int main()
 {
 
-	MyString::test6();
+	MyString::test7();
 	//cout << strstr("ilikecat", "dog") << endl;
+
+	//cpy::test1();
 	return 0;
 }
