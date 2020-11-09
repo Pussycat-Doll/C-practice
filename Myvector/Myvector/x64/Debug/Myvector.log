@@ -1,0 +1,19 @@
+﻿  test.cpp
+  vector.cpp
+D:\github\C-practice\Myvector\Myvector\vector.h(53,1): error C2662: “size_t my_vector::vector<int>::capacity(void)”: 不能将“this”指针从“const my_vector::vector<int>”转换为“my_vector::vector<int> &”
+D:\github\C-practice\Myvector\Myvector\vector.h(53,20): message : 转换丢失限定符
+D:\github\C-practice\Myvector\Myvector\vector.h(84,10): message : 参见“my_vector::vector<int>::capacity”的声明
+D:\github\C-practice\Myvector\Myvector\vector.h(49): message : 在编译 类 模板 成员函数“my_vector::vector<int> my_vector::vector<int>::operator =(const my_vector::vector<int> &)”时
+D:\github\C-practice\Myvector\Myvector\vector.h(262): message : 查看对正在编译的函数 模板 实例化“my_vector::vector<int> my_vector::vector<int>::operator =(const my_vector::vector<int> &)”的引用
+D:\github\C-practice\Myvector\Myvector\vector.h(207): message : 查看对正在编译的 类 模板 实例化“my_vector::vector<int>”的引用
+D:\github\C-practice\Myvector\Myvector\vector.h(53,1): error C3078: 必须在新的表达式中指定数组大小
+D:\github\C-practice\Myvector\Myvector\vector.h(54,1): error C2662: “size_t my_vector::vector<int>::size(void)”: 不能将“this”指针从“const my_vector::vector<int>”转换为“my_vector::vector<int> &”
+D:\github\C-practice\Myvector\Myvector\vector.h(54,24): message : 转换丢失限定符
+D:\github\C-practice\Myvector\Myvector\vector.h(80,10): message : 参见“my_vector::vector<int>::size”的声明
+D:\github\C-practice\Myvector\Myvector\vector.h(55,1): error C2662: “size_t my_vector::vector<int>::capacity(void)”: 不能将“this”指针从“const my_vector::vector<int>”转换为“my_vector::vector<int> &”
+D:\github\C-practice\Myvector\Myvector\vector.h(55,33): message : 转换丢失限定符
+D:\github\C-practice\Myvector\Myvector\vector.h(84,10): message : 参见“my_vector::vector<int>::capacity”的声明
+D:\github\C-practice\Myvector\Myvector\vector.h(61,1): error C2662: “size_t my_vector::vector<int>::size(void)”: 不能将“this”指针从“const my_vector::vector<int>”转换为“my_vector::vector<int> &”
+D:\github\C-practice\Myvector\Myvector\vector.h(61,4): message : 转换丢失限定符
+D:\github\C-practice\Myvector\Myvector\vector.h(80,10): message : 参见“my_vector::vector<int>::size”的声明
+  正在生成代码...
