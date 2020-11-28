@@ -143,47 +143,85 @@
 //    return 0;
 //}
 
+//#include<iostream>
+//#include<vector>
+//using namespace std;
+//
+//int main()
+//{
+//    int n;
+//    cin >> n;
+//    vector<int> arr;
+//    while (n--)
+//    {
+//        int x;
+//        cin >> x;
+//        arr.push_back(x);
+//    }
+//
+//    int r = 0;
+//    int flag = 0;
+//    for (size_t i = 1; i < arr.size(); ++i)
+//    {
+//        while (arr[i - 1] <= arr[i])
+//        {
+//            ++i;
+//            flag = 1;
+//        }
+//        if (flag == 1)
+//        {
+//            ++r;
+//            flag = 0;
+//        }
+//        while (arr[i - 1] >= arr[i])
+//        {
+//            ++i;
+//            flag = 1;
+//        }
+//        if (flag == 1)
+//        {
+//            ++r;
+//            flag = 0;
+//        }
+//    }
+//    cout << r << endl;
+//    return 0;
+//}
+
 #include<iostream>
-#include<vector>
+#include<algorithm>
 using namespace std;
+
 
 int main()
 {
-    int n;
-    cin >> n;
-    vector<int> arr;
-    while (n--)
-    {
-        int x;
-        cin >> x;
-        arr.push_back(x);
-    }
+    int M;
+    int N;
+    cin >> M >> N;
 
-    int r = 0;
-    int flag = 0;
-    for (size_t i = 1; i < arr.size(); ++i)
+    int res = 0;
+    if (N <= 9)
     {
-        while (arr[i - 1] <= arr[i])
+        while (M)
         {
-            ++i;
-            flag = 1;
+            res = res * 10 + (M % N);
+            M /= 10;
         }
-        if (flag == 1)
-        {
-            ++r;
-            flag = 0;
-        }
-        while (arr[i - 1] >= arr[i])
-        {
-            ++i;
-            flag = 1;
-        }
-        if (flag == 1)
-        {
-            ++r;
-            flag = 0;
-        }
+        cout << res << endl;
     }
-    cout << r << endl;
+    else
+    {
+        string s;
+        while (M)
+        {
+            if (M % N > 9)
+                s += ('A' + (M % N));
+            else
+                s += ('0' + (M % N));
+            M /= 10;
+        }
+        reverse(s.begin(), s.end());
+        cout << s << endl;
+    }
     return 0;
 }
