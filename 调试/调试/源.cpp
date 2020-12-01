@@ -188,40 +188,76 @@
 //    return 0;
 //}
 
+//#include<iostream>
+//#include<algorithm>
+//using namespace std;
+//
+//
+//int main()
+//{
+//    int M;
+//    int N;
+//    cin >> M >> N;
+//
+//    int res = 0;
+//    if (N <= 9)
+//    {
+//        while (M)
+//        {
+//            res = res * 10 + (M % N);
+//            M /= 10;
+//        }
+//        cout << res << endl;
+//    }
+//    else
+//    {
+//        string s;
+//        while (M)
+//        {
+//            if (M % N > 9)
+//                s += ('A' + (M % N));
+//            else
+//                s += ('0' + (M % N));
+//            M /= 10;
+//        }
+//        reverse(s.begin(), s.end());
+//        cout << s << endl;
+//    }
+//    return 0;
+//}
+
 #include<iostream>
-#include<algorithm>
+#include<vector>
 using namespace std;
+
+//f(n,m)=f(n,m-1)+f(n-1,m)
 
 
 int main()
 {
-    int M;
-    int N;
-    cin >> M >> N;
-
-    int res = 0;
-    if (N <= 9)
+    int n, m;
+    cin >> n >> m;
+    vector<vector<int>> path;
+    path.resize(n + 1);
+    for (int i = 0; i <= n; ++i)
     {
-        while (M)
-        {
-            res = res * 10 + (M % N);
-            M /= 10;
-        }
-        cout << res << endl;
+        path[i].resize(m + 1);
     }
-    else
+    for (int i = 0; i < m+1; ++i)
     {
-        string s;
-        while (M)
-        {
-            if (M % N > 9)
-                s += ('A' + (M % N));
-            else
-                s += ('0' + (M % N));
-            M /= 10;
-        }
-        reverse(s.begin(), s.end());
-        cout << s << endl;
+        path[0][i] = 1;
     }
+    for (int i = 0; i < n+1; ++i)
+    {
+        path[i][0] = 1;
+    }
+    for (int i = 1; i < n+1; ++i)
+    {
+        for (int j = 1; j < m+1; ++j)
+        {
+            path[i][j] = path[i - 1][j] + path[i][j - 1];
+        }
+    }
+    cout << path[n][m] << endl;
     return 0;
 }
