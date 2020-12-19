@@ -10,5 +10,5 @@ public:
 	//从中心缓存获取内存
 	void* FetchFromCentralCache(size_t index);
 private:
-	FreeList _freelist[NFREELIST];//存放指针的链表(映射表)
+	FreeList _freelist[NFREELIST];//存放指针的链表(映射表) 
 };

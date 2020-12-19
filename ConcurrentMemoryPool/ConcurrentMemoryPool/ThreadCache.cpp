@@ -10,11 +10,11 @@ void* ThreadCache::Allocte(size_t size)//申请内存
 		return freeList.Pop();
 	else//没有内存,要从CentralCache取内存
 	{
-		return FetchFromCentralCache(Sizeclass::RoundUp(size));//根据size的大小还要进行对齐到8
+		return FetchFromCentralCache(Sizeclass::RoundUp(size));//根据size的大小还要进行对齐
 		//为什么要有CentralCache?为了均衡资源和为内存碎片做准备
-	}
+	} 
 }
-
+ 
 //释放内存，不是真的释放内存，而是把不用的再重新再挂到freelist中
 void ThreadCache::Deallocte(void* ptr,size_t size)
 {
@@ -30,11 +30,11 @@ void ThreadCache::Deallocte(void* ptr,size_t size)
 //从中心缓存获取Num个对象，返回其中一个的指针，剩下的num-1被挂到freelist中等待申请
 //void* ThreadCache::FetchFromCentralCache(size_t index)
 //{
-//	//模拟取内存对象的代码，测试ThreadCache的逻辑
+//	//模拟取内存对象 的代码，测试ThreadCache的逻辑
 //	size_t num = 20;//与单个对象的大小有关，还要进行调整，获取批量的内存
 //	size_t size = (index + 1) * 8;//计算单个内存的大小
 //	char* start = (char*)malloc(size*num);
-//	char* cur = start;
+//	char* cur = start; 
 //	for (size_t i = 0; i < num - 1; ++i)//将其连起来//为什么是num-1
 //	{
 //		char* next = cur + size;
@@ -49,6 +49,7 @@ void ThreadCache::Deallocte(void* ptr,size_t size)
 //
 //	return start;
 //}
+
 void* ThreadCache::FetchFromCentralCache(size_t size)
 {
 	size_t num = Sizeclass::NumMoveSize(size);

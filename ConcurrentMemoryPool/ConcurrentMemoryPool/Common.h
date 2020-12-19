@@ -8,19 +8,19 @@ const size_t MAX_SIZE = 64 * 1024;//64k
 const size_t NFREELIST = MAX_SIZE / 8;//freelist的大小
 const size_t MAX_PAGES = 129;//可申请页数的最大值(给129，是方便下标对齐，1对准下标1,128对准下标128)
 
-inline void*& NextObj(void* obj)//取下一个对象，下一个对象存在头四个字节(32位)/头八个字节(64位)之中
+inline void*& NextObj(void* obj)//获取下一个对象，下一个对象存在头四个字节(32位)/头八个字节(64位)之中
 {
 	return *((void**)obj);//对void**解引用，返回void*的大小，32位平台4个字节，64位平台8个字节
 }
 class FreeList
 {
 public:
-	void Push(void* obj)//头插？？？
+	void Push(void* obj)//头插，归还对象
 	{
 		NextObj(obj) = _freelist;
 		_freelist = obj;
 	}
-	void PushRange(void* head, void* tail)
+	void PushRange(void* head, void* tail)//插入一连串的对象
 	{
 		NextObj(tail) = _freelist;
 		_freelist = head;
@@ -40,13 +40,14 @@ public:
 		_freelist = cur;
 		return actuallNum;
 	}
-	void* Pop()//头删
+	void* Pop()//头删，拿一个对象
 	{
 		void* obj = _freelist;
-		_freelist = NextObj(obj);
+		_freelist = NextObj(obj); 
+
 		return obj;
 	}
-	bool Empty()
+	bool Empty()//判空
 	{
 		return _freelist == nullptr;
 	}
@@ -83,11 +84,13 @@ public:
 		return (size + alignment - 1)&(~(alignment - 1));
 	}
 	/*
-	控制在最多[1%,10%]左右的内碎片浪费
-	[1,128] 8byte对齐 freelist[0,16) 浪费率--7/128 = 0.05
-	[129,1024] 16byte对齐 freelist[16,72)浪费率--15/(128+16) = 0.10
-	[1025,8*1024] 128byte对齐 freelist[72,128)浪费率--127/(1024+128) = 0.11
-	[8*1024 + 1,64*1024] 1024byte对齐 freelist[128,184)浪费率--1023/(8*1024+1024) = 0.11
+	* 为什么要对齐呢？申请5字节，不会就只给5字节，threadcache会给你8字节，根据你要申请哒
+	* 的大小，我会对齐一个一定内 存碎片浪费的数目上
+	控制在最多[1%,10%]左右的内碎片浪费   分子--最大的浪费数，分母--符合该对齐数的最大/最小字节
+	[1,128] 8byte对齐 freelist[0,16) 浪费率--7/128 = 0.05      
+	[129,1024] 16byte对齐 freelist[16,72)浪费率--15/(128+16) = 0.10   15/1024 = 0.01   (128+16)--128是已经全部对齐到8字节的+符合该对齐数的最小字节数
+	[1025,8*1024] 128byte对齐 freelist[72,128)浪费率--127/(1024+128) = 0.11  127/8192 = 0.01
+	[8*1024 + 1,64*1024] 1024byte对齐 freelist[128,184)浪费率--1023/(8*1024+1024) = 0.11   1023/64*2014 = 0.01 
 	*/
 	static inline size_t RoundUp(size_t size)
 	{
@@ -103,27 +106,32 @@ public:
 		else
 			return -1;
 	}
+	//[0,8]字节对应自由链表中的下标为0
 	//[9,16]字节对应自由链表中的下标为1
 	//alignment_shift是对齐数对应2的幂，如：8对应2的幂为3
 	//(1<<alignment_shift)为对齐数
 	//>> alignment_shift即为除以对齐数，得到的结果为正确下标的后一位
+	//[9,16] + 7 == [16,23] -->  [16,23]-[1 0000, 1 0111]>>3 == 0 0010 == 2 
+	//即正确下标的下一位
+	//最后再减一减到正确下标
 	static size_t _ListIndex(size_t size, int alignment_shift)
 	{
 		return ((size + (1 << alignment_shift) - 1) >> alignment_shift) - 1;
 	}
 	/*
-	[1,128] 8byte对齐 freelist[0,16) <--- 128/8 = 16
-	[129,1024] 16byte对齐 freelist[16,72) <--- (1024-128)/16 + 16= 72
-	[1025,8*1024] 128byte对齐 freelist[72,128) <--- (8*1024-1024)/128 + 72 = 128
-	[8*1024 + 1,64*1024] 1024byte对齐 freelist[128,184)<---(64*1024 - 8*1024)/1024 + 128 = 184
+	[1,128]字节以 8byte 对齐 freelist下标范围[0,16) <--- 128/8 = 16
+	[129,1024]字节以 16byte 对齐 freelist下标范围[16,72) <--- (1024-128)/16 = 56  56 + 16= 72
+	[1025,8*1024]字节以 128byte 对齐 freelist下标范围[72,128) <--- (8*1024-1024)/128  = 56  56 + 72 = 128
+	[8*1024 + 1,64*1024]字节以 1024byte 对齐 freelist下标范围[128,184)<---(64*1024 - 8*1024)/1024 = 56  56 + 128 = 184
 	*/
 	static size_t ListIndex(size_t size)
 	{
 		assert(size <= MAX_SIZE);
-		static int group_array[4] = { 16, 56, 56, 56 };
-		if (size <= 128)//以8byte对齐
+		//每个区间有多少个链表
+		static int group_array[4] = { 16, 56, 56, 56 }; //计算下标
+		if (size <= 128)//以8byte对齐   
 			return _ListIndex(size, 3);
-		else if (size <= 1024)//以16byte对齐
+		else if (size <= 1024)//以16byte对齐 
 			return _ListIndex(size - 128, 4) + group_array[0];
 		else if (size <= 8 * 1024)//以128byte对齐
 			return _ListIndex(size - 1024, 7) + group_array[0] + group_array[1];
@@ -132,13 +140,13 @@ public:
 		else
 			return -1;
 	}
-	//[2,512],申请的空间比较小，就会给得多一点；申请得空间比较大，就会给得少点
-	static size_t NumMoveSize(size_t size)
+	//[2,512]字节,申请的空间比较小，就会给得多一点；申请得空间比较大，就会给得少点
+	static size_t NumMoveSize(size_t size)//size---单个对象的大小
 	{
 		if (size == 0)//防止分子为零的情况出现
 			return 0;
 		int num = MAX_SIZE / size;
-		if (num < 2)//最少给两个内存对象
+		if (num < 2)//最少一次取两个内存对象
 			num = 2;
 
 		if (num > 512)
@@ -151,17 +159,18 @@ public:
 		size_t num = NumMoveSize(size);//申请的内存对象的个数
 		size_t npage = num*size;//总的字节数
 
-		npage >>= 12;
+		npage >>= 12;//2^12=4k一页
 		if (npage == 0)
-			npage = 1;
+			npage = 1;//最少返回一页
 		return npage;
 		
 
 	}
 
 };
+//////////////////////////////////////////////////////////////////////
 //span 跨度--管理以页为单位的内存对象，本质是方便做合并，解决内存碎片
-//当是32位平台时，int还足够去显示页码 2^32/2^12 == 2^20 
+//当是在32位平台时，int还足够去显示页码 2^32/2^12 == 2^20 
 //但是在64位平台中    2^64/2^12(4k) == 2^52
 //所以对于_pageid的类型，需要用一个条件编译来选择合适的一种
 #ifdef _WIN32//32位平台
@@ -175,7 +184,7 @@ struct Span
 	PAGE_ID _pageid;//页号
 	int _pagesize;//页的数量
 	FreeList _freelist;//内存对象的自由链表
-	int _usecount;//内存对象使用的数量
+	int _usecount;//内存块对象使用的数量
 	//size_t objectsize;//对象大小
 
 	//双向循环的，方便取走或插入其中的一个
@@ -220,7 +229,7 @@ public:
 		//prev newspan pos
 		Span* prev = pos->_prev;
 		prev->_next = newspan;
-		newspan->_prev = prev;
+		newspan->_prev = prev; 
 		newspan->_next = pos;
 		pos->_prev = newspan;
 	}

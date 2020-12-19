@@ -37,7 +37,7 @@ void UnitTestSizeClass()
 	cout << Sizeclass::RoundUp(1023) << endl<<endl;
 
 	cout << Sizeclass::RoundUp(1025) << endl;
-	cout << Sizeclass::RoundUp(8*1024) << endl << endl;
+	cout << Sizeclass::RoundUp(8*1024-1) << endl << endl;
 
 	cout << Sizeclass::RoundUp(8 * 1024 + 1) << endl;
 	cout << Sizeclass::RoundUp(64 * 1024) << endl << endl;
@@ -49,7 +49,7 @@ void UnitTestSizeClass()
 	cout << Sizeclass::ListIndex(1023) << endl << endl;
 
 	cout << Sizeclass::ListIndex(1025) << endl;
-	cout << Sizeclass::ListIndex(8 * 1024) << endl << endl;
+	cout << Sizeclass::ListIndex(8 * 1024-1) << endl << endl;
 
 	cout << Sizeclass::ListIndex(8 * 1024 + 1) << endl;
 	cout << Sizeclass::ListIndex(64 * 1024) << endl << endl;

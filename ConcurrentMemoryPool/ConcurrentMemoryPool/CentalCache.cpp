@@ -1,7 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 #include"CentralCache.h"
 #include"Pagecache.h"
-
+ 
 // 从中心缓存获取一定数量为num,大小为size的对象给threadcache
 //这些内存对象是一整段，以start开始，以end结束
 size_t CentralCache::FetchRangeObj(void*& start, void*& end, size_t num, size_t size)

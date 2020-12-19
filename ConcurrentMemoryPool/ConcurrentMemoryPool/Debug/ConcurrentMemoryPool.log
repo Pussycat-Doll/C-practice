@@ -1,5 +1,10 @@
-﻿  ThreadCache.cpp
+﻿  CentalCache.cpp
+  Pagecache.cpp
+E:\github\C-practice\ConcurrentMemoryPool\ConcurrentMemoryPool\Pagecache.cpp(5,27): error C2039: "Empty": 不是 "SpanList" 的成员
+E:\github\C-practice\ConcurrentMemoryPool\ConcurrentMemoryPool\Common.h(188): message : 参见“SpanList”的声明
+E:\github\C-practice\ConcurrentMemoryPool\ConcurrentMemoryPool\Pagecache.cpp(8,31): error C3867: “SpanList::PopFront”: 非标准语法；请使用 "&" 来创建指向成员的指针
+E:\github\C-practice\ConcurrentMemoryPool\ConcurrentMemoryPool\Pagecache.cpp(13,22): error C2039: "Empty": 不是 "SpanList" 的成员
+E:\github\C-practice\ConcurrentMemoryPool\ConcurrentMemoryPool\Common.h(188): message : 参见“SpanList”的声明
   test.cpp
-  CentalCache.cpp
+  ThreadCache.cpp
   正在生成代码...
-  ConcurrentMemoryPool.vcxproj -> D:\比特科技\比特代码\ConcurrentMemoryPool\Debug\ConcurrentMemoryPool.exe
