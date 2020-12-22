@@ -226,38 +226,86 @@
 //    return 0;
 //}
 
+//#include<iostream>
+//#include<vector>
+//using namespace std;
+//
+////f(n,m)=f(n,m-1)+f(n-1,m)
+//
+//
+//int main()
+//{
+//    int n, m;
+//    cin >> n >> m;
+//    vector<vector<int>> path;
+//    path.resize(n + 1);
+//    for (int i = 0; i <= n; ++i)
+//    {
+//        path[i].resize(m + 1);
+//    }
+//    for (int i = 0; i < m+1; ++i)
+//    {
+//        path[0][i] = 1;
+//    }
+//    for (int i = 0; i < n+1; ++i)
+//    {
+//        path[i][0] = 1;
+//    }
+//    for (int i = 1; i < n+1; ++i)
+//    {
+//        for (int j = 1; j < m+1; ++j)
+//        {
+//            path[i][j] = path[i - 1][j] + path[i][j - 1];
+//        }
+//    }
+//    cout << path[n][m] << endl;
+//    return 0;
+//}
 #include<iostream>
+#include<string>
 #include<vector>
 using namespace std;
-
-//f(n,m)=f(n,m-1)+f(n-1,m)
-
-
 int main()
 {
-    int n, m;
-    cin >> n >> m;
-    vector<vector<int>> path;
-    path.resize(n + 1);
-    for (int i = 0; i <= n; ++i)
+    string str;
+    getline(cin, str);
+    vector<string> res;
+    string temp = "";
+    int flag = 0;//标记引号的出现
+    for (int i = 0; i < str.size(); ++i)
     {
-        path[i].resize(m + 1);
-    }
-    for (int i = 0; i < m+1; ++i)
-    {
-        path[0][i] = 1;
-    }
-    for (int i = 0; i < n+1; ++i)
-    {
-        path[i][0] = 1;
-    }
-    for (int i = 1; i < n+1; ++i)
-    {
-        for (int j = 1; j < m+1; ++j)
+        if (str[i] != ' ' && str[i] != '"')
         {
-            path[i][j] = path[i - 1][j] + path[i][j - 1];
+            temp += str[i];
+        }
+        else if (str[i] == ' ' && flag == 0)
+        {
+            res.push_back(temp);
+            temp = "";
+        }
+        else if (str[i] == ' ' && flag == 1)
+        {
+            temp += ' ';
+        }
+        else if (str[i] == '"')
+        {
+            ++flag;
+        }
+        if (flag == 2)
+        {
+            res.push_back(temp);
+            temp = "";
+            flag = 0;
+            ++i;
         }
     }
-    cout << path[n][m] << endl;
+    if(!temp.empty())
+        res.push_back(temp);
+    cout << res.size() << endl;
+    for (auto e : res)
+    {
+        cout << e << endl;
+    }
+
     return 0;
 }
