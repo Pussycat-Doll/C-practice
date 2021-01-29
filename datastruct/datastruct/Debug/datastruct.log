@@ -1,0 +1,9 @@
+﻿  maintest.c
+E:\github\待提交\datastruct\datastruct\seqlist.h(114,21): warning C4018: “<”: 有符号/无符号不匹配
+E:\github\待提交\datastruct\datastruct\seqlist.h(132,32): warning C4018: “>”: 有符号/无符号不匹配
+E:\github\待提交\datastruct\datastruct\seqlist.h(155,21): warning C4018: “<”: 有符号/无符号不匹配
+E:\github\待提交\datastruct\datastruct\seqlist.h(172,23): warning C4018: “<”: 有符号/无符号不匹配
+E:\github\待提交\datastruct\datastruct\seqlist.h(183,20): warning C4018: “<”: 有符号/无符号不匹配
+E:\github\待提交\datastruct\datastruct\seqlist.h(221,20): warning C4018: “<”: 有符号/无符号不匹配
+E:\github\待提交\datastruct\datastruct\seqlist.h(223,21): warning C4018: “<”: 有符号/无符号不匹配
+  datastruct.vcxproj -> E:\github\待提交\datastruct\Debug\datastruct.exe
