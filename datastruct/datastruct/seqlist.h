@@ -7,7 +7,7 @@
 #define DateType int
 typedef struct SeqList
 {
-	DateType* base;//头指针
+	DateType* base;//指向数据的指针
 	size_t _capacity;
 	size_t _size;
 }SeqList;
@@ -26,16 +26,18 @@ void SeqListPushBack(SeqList* pList, DateType x);
 void SeqListPushFront(SeqList* pList, DateType x);
 void SeqListPopBack(SeqList* pList);
 void SeqListPopFront(SeqList* pList);
-void SeqListInsertPos(SeqList* pList, size_t pos, DateType x);
-void SeqListInsertVal(SeqList* pList, DateType val);
-void SeqListErasePos(SeqList* pList, size_t pos);
-void SeqListEraseVal(SeqList* pList, DateType val);
+void SeqListInsertByPos(SeqList* pList, size_t pos, DateType x);
+void SeqListInsertByVal(SeqList* pList, DateType val);
+void SeqListEraseByPos(SeqList* pList, size_t pos);
+void SeqListEraseByVal(SeqList* pList, DateType val);
 size_t SeqListFind(SeqList* pList, DateType val);
 size_t SeqListLength(SeqList* pList);
 size_t SeqListCapacity(SeqList* pList);
 void SeqListSort(SeqList* pList);
 void SeqListClean(SeqList* pList);
-/// ///////////////////////////////////////////////////////////////
+void SeqListReverse(SeqList* pList);
+size_t SeqListBinarySearch(SeqList* pList, DateType val);
+//////////////////////////////////////////////////////////////
 bool IsFull(SeqList* pList)
 {
 	assert(pList != NULL);
@@ -123,7 +125,7 @@ void SeqListPopFront(SeqList* pList)
 		SeqListPopBack(pList);//只有一个元素的情况下等于尾删
 	}
 }
-void SeqListInsertPos(SeqList* pList, size_t pos, DateType x)
+void SeqListInsertByPos(SeqList* pList, size_t pos, DateType x)
 {
 	assert(pList != NULL && pos <= pList->_size);
 	if (IsFull(pList))
@@ -138,32 +140,24 @@ void SeqListInsertPos(SeqList* pList, size_t pos, DateType x)
 		++pList->_size;
 	}
 }
-void SeqListInsertVal(SeqList* pList, DateType val)
+void SeqListInsertByVal(SeqList* pList, DateType val)
 {
 	assert(pList != NULL);
 	if(IsFull(pList))
 		printf("顺序表已满，无法正常进行插入\n");
-	else if (IsEmpty(pList))
-	{
-		SeqListPushFront(pList, val);
-	}
-	else if (pList->base[pList->_size - 1] <= val)
-	{
-		SeqListPushBack(pList, val);
-	}
 	else
 	{
-		for (int i = 0; i < pList->_size; ++i)
+		size_t end = pList->_size - 1;
+		while (end >= 0 && pList->base[end] > val)
 		{
-			if (pList->base[i] > val)
-			{
-				SeqListInsertPos(pList, i, val);
-				break;
-			}
+			pList->base[end + 1] = pList->base[end];
+			--end;
 		}
+		pList->base[end + 1] = val;
+		++pList->_size;
 	}
 }
-void SeqListErasePos(SeqList* pList, size_t pos)
+void SeqListEraseByPos(SeqList* pList, size_t pos)
 {
 	assert(pList != NULL && pos < pList->_size);
 	if(IsEmpty(pList))
@@ -192,18 +186,18 @@ size_t SeqListFind(SeqList* pList, DateType val)
 	return pos;
 }
 
-void SeqListEraseVal(SeqList* pList, DateType val)
+void SeqListEraseByVal(SeqList* pList, DateType val)
 {
 	assert(pList != NULL);
 	if (IsEmpty(pList))
-		printf("该顺序表为空，无法正常尾删\n");
+		printf("该顺序表为空，无法正常删除\n");
 	else
 	{
 		size_t pos = SeqListFind(pList,val);
 		if (pos == -1)
 			printf("该元素不存在，删除失败!\n");
 		else
-			SeqListErasePos(pList, pos);
+			SeqListEraseByPos(pList, pos);
 	}
 }
 size_t SeqListLength(SeqList* pList)
@@ -232,4 +226,36 @@ void SeqListClean(SeqList* pList)
 {
 	assert(pList);
 	pList->_size = 0;
+}
+void SeqListReverse(SeqList* pList)
+{
+	assert(pList);
+	if (pList->_size == 1)
+		return;
+	int start = 0, end = pList->_size - 1;
+	while (start < end)
+	{
+		Swap(&pList->base[start], &pList->base[end]);
+		++start;
+		--end;
+	}
+}
+size_t SeqListBinarySearch(SeqList* pList, DateType val)
+{
+	assert(pList != NULL);
+	int low = 0, high = pList->_size - 1;
+	size_t pos = -1;
+	while (low <= high)
+	{
+		int mid = low + (high - low) >> 1;
+		if (val < pList->base[mid])
+			high = mid - 1;
+		else if (val > pList->base[mid])
+			low = mid + 1;
+		else
+		{
+			pos = mid;
+			break;
+		}
+	}
 }

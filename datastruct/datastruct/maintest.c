@@ -3,7 +3,7 @@
 
 int main()
 {
-	SeqList sq;
+	/*SeqList sq;
 	SeqListInit(&sq);
 
 	SeqListPushBack(&sq, 1);
@@ -15,7 +15,7 @@ int main()
 	SeqListPushBack(&sq, 9);
 	SeqListPushBack(&sq, 0);
 	SeqListPushBack(&sq, 8);
-	SeqListShow(&sq);
+	SeqListShow(&sq);*/
 
 	/*SeqList sq1;
 	SeqListInit(&sq1);
@@ -70,26 +70,29 @@ int main()
 	//SeqListInsertPos(&sq2, 1, 6);
 	//SeqListInsertPos(&sq2, 3, 8);
 
-	/*SeqList sq3;
+	SeqList sq3;
 	SeqListInit(&sq3);
 
-	SeqListInsertVal(&sq3, 4);
+	SeqListInsertByVal(&sq3, 4);
 	SeqListShow(&sq3);
-	SeqListInsertVal(&sq3, 1);
+	SeqListInsertByVal(&sq3, 1);
 	SeqListShow(&sq3);
-	SeqListInsertVal(&sq3, 9);
+	SeqListInsertByVal(&sq3, 9);
 	SeqListShow(&sq3);
-	SeqListInsertVal(&sq3, 2);
+	SeqListInsertByVal(&sq3, 2);
 	SeqListShow(&sq3);
-	SeqListInsertVal(&sq3, 6);
+	SeqListInsertByVal(&sq3, 6);
 	SeqListShow(&sq3);
-	SeqListInsertVal(&sq3, 0);
+	SeqListInsertByVal(&sq3, 0);
 	SeqListShow(&sq3);
-	SeqListInsertVal(&sq3, 4);
+	SeqListInsertByVal(&sq3, 4);
 	SeqListShow(&sq3);
-	SeqListInsertVal(&sq3, 7);
+	SeqListInsertByVal(&sq3, 7);
 	SeqListShow(&sq3);
-	SeqListInsertVal(&sq3, 8);*/
+	SeqListInsertByVal(&sq3, 8);
+
+	printf("元素%d的位置为%d",SeqListBinarySearch(&sq3, 9));
+	SeqListDestory(&sq3);
 
 	/*SeqListErasePos(&sq3, 7);
 	SeqListShow(&sq3);
@@ -115,8 +118,8 @@ int main()
 	SeqListEraseVal(&sq3, 9);
 	SeqListShow(&sq3);*/
 
-	SeqListSort(&sq);
-	SeqListShow(&sq);
+	/*SeqListSort(&sq);
+	SeqListShow(&sq);*/
 
 	return 0;
 }
