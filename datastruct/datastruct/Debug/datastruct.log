@@ -1,13 +1,7 @@
 ﻿  maintest.c
-E:\github\C-practice\datastruct\datastruct\seqlist.h(117,21): warning C4018: “<”: 有符号/无符号不匹配
-E:\github\C-practice\datastruct\datastruct\seqlist.h(135,32): warning C4018: “>”: 有符号/无符号不匹配
-E:\github\C-practice\datastruct\datastruct\seqlist.h(167,23): warning C4018: “<”: 有符号/无符号不匹配
-E:\github\C-practice\datastruct\datastruct\seqlist.h(178,20): warning C4018: “<”: 有符号/无符号不匹配
-E:\github\C-practice\datastruct\datastruct\seqlist.h(216,20): warning C4018: “<”: 有符号/无符号不匹配
-E:\github\C-practice\datastruct\datastruct\seqlist.h(218,21): warning C4018: “<”: 有符号/无符号不匹配
-E:\github\C-practice\datastruct\datastruct\seqlist.h(250,36): warning C4554: “>>”: 检查运算符优先级是否存在的可能的错误；使用括号阐明优先级
-E:\github\C-practice\datastruct\datastruct\maintest.c(94,9): warning C4473: “printf”: 没有为格式字符串传递足够的参数
-E:\github\C-practice\datastruct\datastruct\maintest.c(94,9): message : 占位符和其参数预计 2 可变参数，但提供的却是 1 参数
-E:\github\C-practice\datastruct\datastruct\maintest.c(94,9): message : 缺失的可变参数 2 为格式字符串“%d”所需
-E:\github\C-practice\datastruct\datastruct\seqlist.h(261): warning C4716: “SeqListBinarySearch”: 必须返回一个值
+E:\github\C-practice\datastruct\datastruct\seqlist.h(147,21): warning C4018: “<”: 有符号/无符号不匹配
+E:\github\C-practice\datastruct\datastruct\seqlist.h(197,23): warning C4018: “<”: 有符号/无符号不匹配
+E:\github\C-practice\datastruct\datastruct\seqlist.h(208,20): warning C4018: “<”: 有符号/无符号不匹配
+E:\github\C-practice\datastruct\datastruct\seqlist.h(246,20): warning C4018: “<”: 有符号/无符号不匹配
+E:\github\C-practice\datastruct\datastruct\seqlist.h(248,21): warning C4018: “<”: 有符号/无符号不匹配
   datastruct.vcxproj -> E:\github\C-practice\datastruct\Debug\datastruct.exe

@@ -20,6 +20,7 @@ void Swap(DateType* a, DateType* b)
 bool IsFull(SeqList* pList);
 bool IsEmpty(SeqList* pList);
 void SeqListShow(SeqList* pList);
+bool _Inc(SeqList* pList, size_t new_capacity);//扩容操作
 void SeqListInit(SeqList* pList);
 void SeqListDestory(SeqList* pList);
 void SeqListPushBack(SeqList* pList, DateType x);
@@ -36,7 +37,10 @@ size_t SeqListCapacity(SeqList* pList);
 void SeqListSort(SeqList* pList);
 void SeqListClean(SeqList* pList);
 void SeqListReverse(SeqList* pList);
+DateType SeqListFront(SeqList* pList);
+DateType SeqListBack(SeqList* pList);
 size_t SeqListBinarySearch(SeqList* pList, DateType val);
+void SeqListEraseAll(SeqList* pList);
 //////////////////////////////////////////////////////////////
 bool IsFull(SeqList* pList)
 {
@@ -57,6 +61,32 @@ void SeqListShow(SeqList* pList)
 	}
 	printf("\n");
 }
+bool _Inc(SeqList* pList, size_t new_capacity)//扩容操作
+{
+#if 0
+	assert(pList != NULL && new_capacity > pList->_capacity);
+	DateType* newbase = (DateType*)realloc(pList->base, sizeof(DateType) * new_capacity);
+	//realloc包含了以下的前三个步骤
+	if (newbase == NULL)
+		return false;
+	pList->base = newbase;
+	pList->_capacity = new_capacity;
+	return true;
+#endif
+	assert(pList != NULL && new_capacity > pList->_capacity);
+	//① 开辟新空间
+	DateType* newbase = (DateType*)malloc(sizeof(DateType) * new_capacity);
+	if (newbase == NULL)
+		return false;
+	//② 拷贝原有数据
+	memcpy(newbase, pList->base, sizeof(DateType) * pList->_capacity);
+	//③ 释放旧空间
+	free(pList->base);
+	//④ 指向新空间，改变新容量
+	pList->base = newbase;
+	pList->_capacity = new_capacity;
+	return true;
+}
 void SeqListInit(SeqList* pList)
 {
 	pList->_capacity = SEQLIST_SIZE;
@@ -73,7 +103,7 @@ void SeqListDestory(SeqList* pList)
 void SeqListPushBack(SeqList* pList, DateType x)
 {
 	assert(pList != NULL);
-	if (IsFull(pList))
+	if (IsFull(pList) && !_Inc(pList,pList->_capacity*2))
 	{
 		printf("顺序表已满，元素%d无法正常插入\n",x);
 	}
@@ -85,7 +115,7 @@ void SeqListPushBack(SeqList* pList, DateType x)
 void SeqListPushFront(SeqList* pList, DateType x)
 {
 	assert(pList != NULL);
-	if (IsFull(pList))
+	if (IsFull(pList) && !_Inc(pList, pList->_capacity * 2))
 		printf("该顺序表已满\n");
 	else
 	{
@@ -128,13 +158,13 @@ void SeqListPopFront(SeqList* pList)
 void SeqListInsertByPos(SeqList* pList, size_t pos, DateType x)
 {
 	assert(pList != NULL && pos <= pList->_size);
-	if (IsFull(pList))
+	if (IsFull(pList) && !_Inc(pList, pList->_capacity * 2))
 		printf("顺序表已满，无法正常进行插入\n");
 	else
 	{
-		for (int i = pList->_size; i > pos; --i)
+		for (int i = pList->_size - 1; i >= (int)pos; --i)
 		{
-			pList->base[i] = pList->base[i-1];
+			pList->base[i + 1] = pList->base[i];
 		}
 		pList->base[pos] = x;
 		++pList->_size;
@@ -143,7 +173,7 @@ void SeqListInsertByPos(SeqList* pList, size_t pos, DateType x)
 void SeqListInsertByVal(SeqList* pList, DateType val)
 {
 	assert(pList != NULL);
-	if(IsFull(pList))
+	if(IsFull(pList) && !_Inc(pList, pList->_capacity * 2))
 		printf("顺序表已满，无法正常进行插入\n");
 	else
 	{
@@ -240,22 +270,46 @@ void SeqListReverse(SeqList* pList)
 		--end;
 	}
 }
+DateType SeqListFront(SeqList* pList)
+{
+	assert(pList != NULL);
+	if (IsEmpty(pList))
+		return -1;
+	else
+		return pList->base[0];
+}
+DateType SeqListBack(SeqList* pList)
+{
+	assert(pList != NULL);
+	if (IsEmpty(pList))
+		return -1;
+	else
+		return pList->base[pList->_size-1];
+	
+}
 size_t SeqListBinarySearch(SeqList* pList, DateType val)
 {
 	assert(pList != NULL);
 	int low = 0, high = pList->_size - 1;
-	size_t pos = -1;
 	while (low <= high)
 	{
-		int mid = low + (high - low) >> 1;
+		int mid = low + ((high - low)>>1);
 		if (val < pList->base[mid])
 			high = mid - 1;
 		else if (val > pList->base[mid])
 			low = mid + 1;
 		else
 		{
-			pos = mid;
+			return mid;
 			break;
 		}
 	}
+	return -1;
+}
+void SeqListEraseAll(SeqList* pList)
+{
+	assert(pList != NULL);
+	if (IsEmpty(pList))
+		return;
+	pList->_size = 0;
 }
