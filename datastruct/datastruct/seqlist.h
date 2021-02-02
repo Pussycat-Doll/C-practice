@@ -301,7 +301,6 @@ size_t SeqListBinarySearch(SeqList* pList, DateType val)
 		else
 		{
 			return mid;
-			break;
 		}
 	}
 	return -1;

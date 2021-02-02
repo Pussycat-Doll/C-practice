@@ -1,7 +1,4 @@
 ﻿  maintest.c
-E:\github\C-practice\datastruct\datastruct\seqlist.h(147,21): warning C4018: “<”: 有符号/无符号不匹配
-E:\github\C-practice\datastruct\datastruct\seqlist.h(197,23): warning C4018: “<”: 有符号/无符号不匹配
-E:\github\C-practice\datastruct\datastruct\seqlist.h(208,20): warning C4018: “<”: 有符号/无符号不匹配
-E:\github\C-practice\datastruct\datastruct\seqlist.h(246,20): warning C4018: “<”: 有符号/无符号不匹配
-E:\github\C-practice\datastruct\datastruct\seqlist.h(248,21): warning C4018: “<”: 有符号/无符号不匹配
+E:\github\C-practice\datastruct\datastruct\slist.h(180,5): warning C4553: “==”: 未使用表达式结果；是否打算使用“=”?
+E:\github\C-practice\datastruct\datastruct\maintest.c(232,12): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 2 拥有了类型“SListNode *”
   datastruct.vcxproj -> E:\github\C-practice\datastruct\Debug\datastruct.exe

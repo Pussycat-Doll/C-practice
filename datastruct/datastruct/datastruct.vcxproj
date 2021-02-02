@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClInclude Include="commen.h" />
     <ClInclude Include="seqlist.h" />
+    <ClInclude Include="slist.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="maintest.c" />
