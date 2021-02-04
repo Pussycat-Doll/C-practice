@@ -1,4 +1,5 @@
 ﻿  maintest.c
-E:\github\C-practice\datastruct\datastruct\slist.h(180,5): warning C4553: “==”: 未使用表达式结果；是否打算使用“=”?
-E:\github\C-practice\datastruct\datastruct\maintest.c(232,12): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 2 拥有了类型“SListNode *”
+E:\github\C-practice\datastruct\datastruct\maintest.c(338,12): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 2 拥有了类型“SCListNode *”
+E:\github\C-practice\datastruct\datastruct\maintest.c(273,9): warning C4101: “pos”: 未引用的局部变量
+E:\github\C-practice\datastruct\datastruct\maintest.c(267,9): warning C4101: “list”: 未引用的局部变量
   datastruct.vcxproj -> E:\github\C-practice\datastruct\Debug\datastruct.exe
