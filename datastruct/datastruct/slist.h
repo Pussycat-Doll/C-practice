@@ -33,7 +33,6 @@ void SListReverse(SList* phead);
 
 void SListInit(SList* phead)
 {
-	assert(phead != NULL);
 	*phead = NULL;
 }
 

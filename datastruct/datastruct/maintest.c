@@ -265,7 +265,7 @@ return 0;
 int main()
 {
 	SCList list;
-	//SCListInit(&list);
+	SCListInit(&list);
 
 	SCListNode* p = NULL;
 	ElemType item;
@@ -298,73 +298,73 @@ int main()
 			printf("请输入要插入的元素，若要退出，输入-1->\n");
 			while (scanf("%d", &item), item != -1)
 			{
-				//SCListPushBack(&list, item);
+				SCListPushBack(&list, item);
 			}
 			break;
 		case 2:
 			printf("请输入要插入的元素，若要退出，输入-1->\n");
 			while (scanf("%d", &item), item != -1)
 			{
-				//SCListPushFront(&list, item);
+				SCListPushFront(&list, item);
 			}
 			break;
 		case 3:
-			//SCListShow(list);
+			SCListShow(list);
 			break;
 		case 4:
-			//SCListPopBack(&list);
+			SCListPopBack(&list);
 			break;
 		case 5:
-			//SCListPopFront(&list);
+			SCListPopFront(&list);
 			break;
 		case 6:
 			printf("请输入要插入的元素->\n");
 			scanf("%d", &item);
-			//SCListSort(&list);
-			//SCListInsertByVal(&list, item);
+			SCListSort(&list);
+			SCListInsertByVal(&list, item);
 			break;
 		case 7:
 			printf("请输入要删除的元素->\n");
 			scanf("%d", &item);
-			//SCListEraseByVal(&list, item);
+			SCListEraseByVal(&list, item);
 			break;
 		case 8:
 			printf("请输入要查找的元素->\n");
 			scanf("%d", &item);
-			//p = SCListFind(list, item);
+			p = SCListFind(list, item);
 			if (p == NULL)
 				printf("元素%d不存在\n", item);
 			else
 				printf("元素%d所在的位置为%d", item, p);
 			break;
 		case 9:
-			//printf("length = %d\n", SCListLength(list));
+			printf("length = %d\n", SCListLength(list));
 			break;
 		case 10:
 			printf("请输入要删除的元素->\n");
 			scanf("%d", &item);
-			//SCListEraseAll(&list, item);
+			SCListEraseAll(&list, item);
 			break;
 		case 11:
-			//SCListSort(&list);
+			SCListSort(&list);
 			break;
 		case 12:
-			//SCListReverse(&list);
+			SCListReverse(&list);
 			break;
 		case 13:
-			//SCListClean(&list);
+			SCListClean(&list);
 			break;
 		case 14:
-			//if (SCListFront(&list) == -1)
-				//printf("该顺序表为空，无法获取其头部元素\n");
-			//else
-				//printf("头元素为%d\n", SCListFront(&list));
+			if (SCListFront(&list) == -1)
+				printf("该顺序表为空，无法获取其头部元素\n");
+			else
+				printf("头元素为%d\n", SCListFront(&list));
 			break;
 		case 15:
-			//if (SListBack(&list) == -1)
+			if (SCListBack(&list) == -1)
 				printf("该顺序表为空，无法获取其尾部元素\n");
-			//else
-				//printf("末尾元素为%d\n", SCListBack(&list));
+			else
+				printf("末尾元素为%d\n", SCListBack(&list));
 			break;
 		default:
 			printf("输入非法，请重新选选择->\n");
@@ -373,6 +373,6 @@ int main()
 		system("pause");
 		system("cls");
 	}
-	//SCListDestroy(&list);
+	SCListDestroy(&list);
 	return 0;
 }
