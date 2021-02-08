@@ -261,51 +261,181 @@
 //    cout << path[n][m] << endl;
 //    return 0;
 //}
+//#include<iostream>
+//#include<string>
+//#include<vector>
+//using namespace std;
+//int main()
+//{
+//    string str;
+//    getline(cin, str);
+//    vector<string> res;
+//    string temp = "";
+//    int flag = 0;//标记引号的出现
+//    for (int i = 0; i < str.size(); ++i)
+//    {
+//        if (str[i] != ' ' && str[i] != '"')
+//        {
+//            temp += str[i];
+//        }
+//        else if (str[i] == ' ' && flag == 0)
+//        {
+//            res.push_back(temp);
+//            temp = "";
+//        }
+//        else if (str[i] == ' ' && flag == 1)
+//        {
+//            temp += ' ';
+//        }
+//        else if (str[i] == '"')
+//        {
+//            ++flag;
+//        }
+//        if (flag == 2)
+//        {
+//            res.push_back(temp);
+//            temp = "";
+//            flag = 0;
+//            ++i;
+//        }
+//    }
+//    if(!temp.empty())
+//        res.push_back(temp);
+//    cout << res.size() << endl;
+//    for (auto e : res)
+//    {
+//        cout << e << endl;
+//    }
+//
+//    return 0;
+//}
+
+/*
+void ListCreat_Tail(List* phead)
+{
+    assert(phead != NULL);
+    if(*phead == NULL)
+    {
+        *phead = (ListNode*)malloc(sizeof(ListNode));
+        assert(*phead != NULL);
+        (*phead)->data = 1;
+        (*phead)->next = NULL;
+    }
+    ListNode* p = *phead;
+    for(int i = 2; i <= 10; ++i)
+    {
+        ListNode *s = (ListNode*)malloc(sizeof(ListNode));
+        assert(s != NULL);
+        s->data = i;
+
+        s->next = p;
+
+        p = s;
+
+    }
+}*/
+//#include<iostream>
+//using namespace std;
+//int main()
+//{
+//    long double a, b, i;
+//    long double c;
+//    cin >> a >> b >> i;
+//    if (i == 1)
+//    {
+//        c = a;
+//        cout << c << endl;
+//    }
+//    else if (i == 2)
+//    {
+//        c = b;
+//        cout << c << endl;
+//    }
+//    else if (i > 2)
+//    {
+//        int n = i - 2;
+//        while (n--)
+//        {
+//            c = (1 + b) / a;
+//            a = b;
+//            b = c;
+//        }
+//        cout << c << endl;
+//    }
+//    return 0;
+//}
+
 #include<iostream>
-#include<string>
-#include<vector>
 using namespace std;
+  struct ListNode {
+      int val;
+      ListNode *next;
+      ListNode() : val(0), next(nullptr) {}
+      ListNode(int x) : val(x), next(nullptr) {}
+      ListNode(int x, ListNode *next) : val(x), next(next) {}
+ };
+
+
+bool isPalindrome(ListNode* head)
+{
+    if (head == nullptr || head->next == nullptr)
+        return true;
+    ListNode* slow = head;
+    ListNode* fast = head;
+    ListNode* firsthead = head;
+    ListNode* secondhead = nullptr;
+    while (fast != nullptr && fast->next != nullptr)
+    {
+        fast = fast->next->next;
+        slow = slow->next;
+    }
+    if (fast == nullptr)
+        secondhead = slow;
+    else
+        secondhead = slow->next;
+
+    ListNode* cur = secondhead;
+    ListNode* p = secondhead->next;
+    cur->next = nullptr;
+
+    while (p != nullptr)
+    {
+        cur = p;
+        p = p->next;
+        cur->next = secondhead;
+        secondhead = cur;
+    }
+    while (firsthead != nullptr && secondhead != nullptr)
+    {
+        if (firsthead->val == secondhead->val)
+        {
+            firsthead = firsthead->next;
+            secondhead = secondhead->next;
+        }
+        else
+            return false;
+    }
+    return true;
+}
+
 int main()
 {
-    string str;
-    getline(cin, str);
-    vector<string> res;
-    string temp = "";
-    int flag = 0;//标记引号的出现
-    for (int i = 0; i < str.size(); ++i)
-    {
-        if (str[i] != ' ' && str[i] != '"')
-        {
-            temp += str[i];
-        }
-        else if (str[i] == ' ' && flag == 0)
-        {
-            res.push_back(temp);
-            temp = "";
-        }
-        else if (str[i] == ' ' && flag == 1)
-        {
-            temp += ' ';
-        }
-        else if (str[i] == '"')
-        {
-            ++flag;
-        }
-        if (flag == 2)
-        {
-            res.push_back(temp);
-            temp = "";
-            flag = 0;
-            ++i;
-        }
-    }
-    if(!temp.empty())
-        res.push_back(temp);
-    cout << res.size() << endl;
-    for (auto e : res)
-    {
-        cout << e << endl;
-    }
+    ListNode* head = (ListNode*)malloc(sizeof(ListNode));
+    head->val = 1;
 
+    ListNode* p = (ListNode*)malloc(sizeof(ListNode));
+    p->val = 2;
+    head->next = p;
+
+    ListNode* q = (ListNode*)malloc(sizeof(ListNode));
+    q->val = 2;
+    p->next = q;
+
+    ListNode* x = (ListNode*)malloc(sizeof(ListNode));
+    x->val = 1;
+    q->next = x;
+    x->next = nullptr;
+
+    cout<<isPalindrome(head);
     return 0;
 }
