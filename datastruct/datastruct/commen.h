@@ -7,3 +7,4 @@
 #include<windows.h>
 //#include<vld.h>//用于内存泄露的检测
 
+#define ElemType int

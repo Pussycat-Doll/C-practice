@@ -1,6 +1,4 @@
 ﻿  maintest.c
-E:\github\C-practice\datastruct\datastruct\sclist.h(274,30): warning C4047: “函数”:“int”与“SCListNode *”的间接级别不同
-E:\github\C-practice\datastruct\datastruct\sclist.h(274,26): warning C4024: “SCListPushFront”: 形参和实参 2 的类型不同
-E:\github\C-practice\datastruct\datastruct\maintest.c(338,12): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 2 拥有了类型“SCListNode *”
-E:\github\C-practice\datastruct\datastruct\maintest.c(273,9): warning C4101: “pos”: 未引用的局部变量
+E:\github\C-practice\datastruct\datastruct\maintest.c(454,12): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 2 拥有了类型“DCListNode *”
+E:\github\C-practice\datastruct\datastruct\maintest.c(389,9): warning C4101: “pos”: 未引用的局部变量
   datastruct.vcxproj -> E:\github\C-practice\datastruct\Debug\datastruct.exe

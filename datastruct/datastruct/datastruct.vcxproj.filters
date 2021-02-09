@@ -27,6 +27,9 @@
     <ClInclude Include="sclist.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="dclist.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="maintest.c">

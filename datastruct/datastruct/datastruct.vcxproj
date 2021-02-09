@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="commen.h" />
+    <ClInclude Include="dclist.h" />
     <ClInclude Include="sclist.h" />
     <ClInclude Include="seqlist.h" />
     <ClInclude Include="slist.h" />
