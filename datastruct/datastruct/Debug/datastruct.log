@@ -1,4 +1,3 @@
 ﻿  maintest.c
-E:\github\C-practice\datastruct\datastruct\maintest.c(454,12): warning C4477: “printf”: 格式字符串“%d”需要类型“int”的参数，但可变参数 2 拥有了类型“DCListNode *”
-E:\github\C-practice\datastruct\datastruct\maintest.c(389,9): warning C4101: “pos”: 未引用的局部变量
+E:\github\C-practice\datastruct\datastruct\queue.h(265): warning C4715: “CycleSeqQueueFront”: 不是所有的控件路径都返回值
   datastruct.vcxproj -> E:\github\C-practice\datastruct\Debug\datastruct.exe
