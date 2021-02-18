@@ -1,0 +1,3 @@
+﻿  test.c
+E:\github\待提交\bintree\bintree\bintree.h(83,12): warning C4047: “return”:“QueElemType”与“int”的间接级别不同
+  bintree.vcxproj -> E:\github\待提交\bintree\Debug\bintree.exe
