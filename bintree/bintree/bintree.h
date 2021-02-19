@@ -15,13 +15,25 @@ typedef struct BinTreeNode
 typedef BinTreeNode* BinTree;
 
 void BinTreeInit(BinTree* t);
-void BinTreeCreat(BinTree* t);
-int BinTreeSize(BinTree t);
-void BinTreePreOrder(BinTree t);
-void BinTreeInOrder(BinTree t);
-void BinTreePostOrder(BinTree t);
-void BinTreeLevelOrder(BinTree t);
-
+void BinTreeCreat(BinTree* t);//以传参(地址)方式创建
+BinTree BinTreeCreat_1();//以返回值方式创建
+BinTree BinTreeCreat_2(const char* s,int* i);//无需输入字符串，以返回值方式创建
+BinTree BinTreeCreat_2(const char* vlr, const char* lvr, int n);//根据先序和中序创建二叉树
+int BinTreeSize(BinTree t);//结点个数
+void BinTreePreOrder(BinTree t);//先序遍历
+void BinTreeInOrder(BinTree t);//中序遍历
+void BinTreePostOrder(BinTree t);//后序遍历
+void BinTreeLevelOrder(BinTree t);//层序遍历
+void BinTreePreOrder_No(BinTree t);//先序遍历非递归
+void BinTreeInOrder_No(BinTree t);//中序遍历非递归
+void BinTreePostOrder_No(BinTree t);//后序遍历非递归
+int Hight(BinTree t);//树的高度
+BinTreeNode* Left(BinTreeNode* p);
+BinTreeNode* Right(BinTreeNode* p);
+BinTreeNode* BinTreeFind(BinTree t, ElemType key);
+BinTreeNode* BinTreeParent(BinTree t, BinTreeNode* p);
+BinTreeNode* BinTreeClone(BinTree t);
+bool Equal(BinTree t1, BinTree t2);
 
 /////////////////////////////////////////////////
 
@@ -111,6 +123,76 @@ void LinkQueueDestroy(LinkQueue* q)
 	}
 }
 ///////////////////////////////////////////////////////
+typedef BinTreeNode* StackElemType;
+typedef struct LinkStackNode
+{
+	StackElemType val;
+	struct LinkStackNode* next;
+}LinkStackNode;
+typedef LinkStackNode* LinkStack;
+
+void LinkStackInit(LinkStack* pst);
+bool LinkStackIsEmpty(LinkStack* pst);
+void LinkStackPop(LinkStack* pst);
+void LinkStackPush(LinkStack* pst, StackElemType x);
+StackElemType LinkStackTop(LinkStack* pst);
+void LinkStackDestroy(LinkStack* pst);
+
+///////////////////////////////////////////////////////////////
+
+void LinkStackInit(LinkStack* pst)
+{
+	assert(pst);
+	*pst = NULL;
+}
+bool LinkStackIsEmpty(LinkStack* pst)
+{
+	assert(pst != NULL);
+	if (*pst == NULL)
+		return true;
+	return false;
+}
+void LinkStackPop(LinkStack* pst)
+{
+	assert(pst != NULL);
+	if (LinkStackIsEmpty(pst))
+		printf("当前栈为空，无法进行pop操作\n");
+	else
+	{
+		LinkStackNode* head = (*pst);
+		*pst = head->next;
+		free(head);
+	}
+}
+void LinkStackPush(LinkStack* pst, StackElemType x)
+{
+	assert(pst != NULL);
+	LinkStackNode* node = (LinkStackNode*)malloc(sizeof(LinkStackNode));
+	assert(node != NULL);
+	node->val = x;
+	//入栈
+	node->next = *pst;
+	*pst = node;
+}
+
+StackElemType LinkStackTop(LinkStack* pst)
+{
+	assert(pst != NULL);
+	if (!LinkStackIsEmpty(pst))
+		return (*pst)->val;
+}
+void LinkStackDestroy(LinkStack* pst)
+{
+	assert(pst != NULL);
+	LinkStackNode* cur = (*pst);
+	while (cur != NULL)
+	{
+		*pst = cur->next;
+		free(cur);
+		cur = *pst;
+	}
+}
+//////////////////////////////////////////////////////
 
 void BinTreeInit(BinTree* t)
 {
@@ -131,6 +213,59 @@ void BinTreeCreat(BinTree* t)//先序创建二叉树
 		BinTreeCreat(&((*t)->_left));
 		BinTreeCreat(&((*t)->_right));
 	}
+}
+BinTree BinTreeCreat_1()
+{
+	ElemType item;
+	scanf("%c", &item);
+	if (item == '#')
+		return NULL;
+	BinTreeNode* t = (BinTreeNode*)malloc(sizeof(BinTreeNode));
+	assert(t != NULL);
+	t->data = item;
+	t->_left = BinTreeCreat_1();
+	t->_right = BinTreeCreat_1();
+	return t;
+}
+BinTree BinTreeCreat_2(const char* s, int* i)
+{
+	assert(s != NULL);
+	if (s[*i] == '\0' || s[*i] == '#')
+		return NULL;
+	BinTreeNode* t = (BinTreeNode*)malloc(sizeof(BinTreeNode));
+	assert(t != NULL);
+	t->data = s[*i];
+	(*i)++;
+	t->_left = BinTreeCreat_2(s, i);
+	(*i)++;
+	t->_right = BinTreeCreat_2(s, i);
+	return t;
+}
+BinTree BinTreeCreat_3(const char* vlr, const char* lvr, int n)//根据先序和中序创建二叉树
+{
+	if (n == 0)
+		return NULL;
+	int k = 0;
+	while (vlr[0] != lvr[k])
+		++k;
+	BinTreeNode* t = (BinTreeNode*)malloc(sizeof(BinTreeNode));
+	t->data = vlr[0];
+	t->_left = BinTreeCreat_3(vlr+1,lvr,k);
+	t->_right = BinTreeCreat_3(vlr+k+1,lvr+k+1,n-k-1);
+	return t;
+}
+BinTree BinTreeCreat_4(const char* lvr, const char* lrv, int n)//根据先序和中序创建二叉树
+{
+	if (n == 0)
+		return NULL;
+	int k = 0;
+	while (lrv[n-1] != lvr[k])
+		++k;
+	BinTreeNode* t = (BinTreeNode*)malloc(sizeof(BinTreeNode));
+	t->data = lrv[n-1];
+	t->_left = BinTreeCreat_4(lvr, lrv, k);
+	t->_right = BinTreeCreat_4(lvr + k + 1, lvr + k, n - k - 1);
+	return t;
 }
 int BinTreeSize(BinTree t)
 {
@@ -181,27 +316,121 @@ void BinTreeLevelOrder(BinTree t)
 		LinkQueueDe(&q);
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-////////////////////////////////////////////////////////
-
-
-
+void BinTreePreOrder_No(BinTree t)//先序遍历非递归
+{
+	if (t == NULL)
+		return;
+	LinkStack st;
+	LinkStackInit(&st);
+	LinkStackPush(&st, t);
+	while (!(LinkStackIsEmpty(&st)))
+	{
+		BinTreeNode* cur = LinkStackTop(&st);
+		printf("%c", cur->data);
+		LinkStackPop(&st);
+		if (cur->_right != NULL)
+			LinkStackPush(&st, cur->_right);
+		if (cur->_left != NULL)
+			LinkStackPush(&st, cur->_left);
+	}
+	LinkStackDestroy(&st);
+}
+void BinTreeInOrder_No(BinTree t)//中序遍历非递归
+{
+	if (t == NULL)
+		return;
+	LinkStack st;
+	LinkStackInit(&st);
+	do{
+		while (t != NULL)
+		{
+			LinkStackPush(&st, t);
+			t = t->_left;
+		}
+		BinTreeNode* cur = LinkStackTop(&st);
+		printf("%c", cur->data);
+		LinkStackPop(&st);
+		if (cur->_right != NULL)
+			t = cur->_right;
+	} while (!(LinkStackIsEmpty(&st)) || t != NULL);
+}
+void BinTreePostOrder_No(BinTree t)//后序遍历非递归
+{
+	if (t == NULL)
+		return;
+	LinkStack st;
+	LinkStackInit(&st);
+	BinTreeNode* pre = NULL;
+	do
+	{
+		while (t != NULL)
+		{
+			LinkStackPush(&st, t);
+			t = t->_left;
+		}
+		BinTreeNode* p = LinkStackTop(&st);
+		if (p->_right == NULL || p->_right == pre)
+		{
+			printf("%c", p->data);
+			LinkStackPop(&st);
+			pre = p;
+		}
+		else
+			t = p->_right;
+	} while (!(LinkStackIsEmpty(&st)));
+}
+int Hight(BinTree t)
+{
+	if (t == NULL)
+		return 0;
+	return 1 + max(Hight(t->_left), Hight(t->_right));
+}
+BinTreeNode* Left(BinTreeNode* p)
+{
+	assert(p != NULL);
+	return p->_left;
+}
+BinTreeNode* Right(BinTreeNode* p)
+{
+	assert(p != NULL);
+	return p->_right;
+}
+BinTreeNode* BinTreeFind(BinTree t, ElemType key)
+{
+	if (t == NULL || t->data == key)
+		return t;
+	BinTreeNode* leftfind = BinTreeFind(t->_left, key);
+	BinTreeNode* rightfind = BinTreeFind(t->_right, key);
+	return leftfind == NULL ? rightfind : leftfind;
+}
+BinTreeNode* BinTreeParent(BinTree t, BinTreeNode* p)
+{
+	if (t == NULL || t == p || p == NULL)
+		return NULL;
+	else if (t->_left == p || t->_right == p)
+		return t;
+	
+	BinTreeNode* node1 = BinTreeParent(t->_left, p);
+	if (node1 != NULL)
+		return node1;
+	return BinTreeParent(t->_right, p);	
+}
+BinTreeNode* BinTreeClone(BinTree t)
+{
+	if (t == NULL)
+		return NULL;
+	BinTreeNode* bt = (BinTreeNode*)malloc(sizeof(BinTreeNode));
+	bt->data = t->data;
+	bt->_left = BinTreeClone(t->_left);
+	bt->_right = BinTreeClone(t->_right);
+	return bt;
+}
+bool Equal(BinTree t1, BinTree t2)
+{
+	if (t1 == NULL && t2 == NULL)
+		return true;
+	else if (t1 == NULL || t2 == NULL)
+		return false;
+	else 
+		return (t1->data == t2->data) && Equal(t1->_left, t2->_left) && Equal(t1->_right, t2->_right);
+}
