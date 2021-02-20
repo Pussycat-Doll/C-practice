@@ -3,6 +3,9 @@
 #include"commen.h"
 #include"bintree.h"
 
+//ABCDEFGH
+//CBEDFAGH
+//CEFDBHGA
 void main()
 {
 	const char* s = "ABD##E##CF##G##";
@@ -46,5 +49,4 @@ void main()
 	printf("\n");
 	BinTreePostOrder_No(tree);
 	printf("\n");
-
 }

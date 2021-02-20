@@ -1,9 +1,8 @@
 #pragma once
 #include"commen.h"
-/// <summary>
 
-/// </summary>
 
+/////////////////////////////////¶þ²æÊ÷µÄ¶¨Òå
 typedef char BinTreeDataType;
 typedef struct BinTreeNode
 {
@@ -14,12 +13,14 @@ typedef struct BinTreeNode
 
 typedef BinTreeNode* BinTree;
 
+////////////////////////////////¶þ²æÊ÷º¯ÊýµÄÉùÃ÷
 void BinTreeInit(BinTree* t);
 void BinTreeCreat(BinTree* t);//ÒÔ´«²Î(µØÖ·)·½Ê½´´½¨
 BinTree BinTreeCreat_1();//ÒÔ·µ»ØÖµ·½Ê½´´½¨
 BinTree BinTreeCreat_2(const char* s,int* i);//ÎÞÐèÊäÈë×Ö·û´®£¬ÒÔ·µ»ØÖµ·½Ê½´´½¨
-BinTree BinTreeCreat_2(const char* vlr, const char* lvr, int n);//¸ù¾ÝÏÈÐòºÍÖÐÐò´´½¨¶þ²æÊ÷
-int BinTreeSize(BinTree t);//½áµã¸öÊý
+BinTree BinTreeCreat_3(const char* vlr, const char* lvr, int n);//¸ù¾ÝÏÈÐòºÍÖÐÐò´´½¨¶þ²æÊ÷
+BinTree BinTreeCreat_4(const char* lvr, const char* lrv, int n);//¸ù¾ÝÖÐÐòºÍºóÐò´´½¨¶þ²æÊ÷
+int BinTreeSize(BinTree t);//¶þ²æÊ÷½áµã¸öÊý
 void BinTreePreOrder(BinTree t);//ÏÈÐò±éÀú
 void BinTreeInOrder(BinTree t);//ÖÐÐò±éÀú
 void BinTreePostOrder(BinTree t);//ºóÐò±éÀú
@@ -32,11 +33,11 @@ BinTreeNode* Left(BinTreeNode* p);
 BinTreeNode* Right(BinTreeNode* p);
 BinTreeNode* BinTreeFind(BinTree t, ElemType key);
 BinTreeNode* BinTreeParent(BinTree t, BinTreeNode* p);
-BinTreeNode* BinTreeClone(BinTree t);
+BinTreeNode* BinTreeClone(BinTree t);//¿ËÂ¡Ò»¿Ã¶þ²æÊ÷
 bool Equal(BinTree t1, BinTree t2);
 
-/////////////////////////////////////////////////
-
+////////////////////////////////////
+////////////////////////////////////¹ØÓÚ¶ÓÁÐµÄ¶¨Òå¼°¹¦ÄÜÊµÏÖ
 typedef BinTreeNode* QueElemType;
 
 typedef struct LinkQueueNode
@@ -44,13 +45,11 @@ typedef struct LinkQueueNode
 	struct LinkQueueNode* next;
 	QueElemType data;
 }LinkQueueNode;
-
 typedef struct LinkQueue
 {
 	LinkQueueNode* head;
 	LinkQueueNode* tail;
 }LinkQueue;
-
 
 void LinkQueueInit(LinkQueue* q)
 {
@@ -122,7 +121,8 @@ void LinkQueueDestroy(LinkQueue* q)
 		cur = q->head;
 	}
 }
-///////////////////////////////////////////////////////
+/////////////////////////////////////////
+/////////////////////////////////////////¹ØÓÚÕ»µÄ¶¨ÒåÓëÊµÏÖ
 typedef BinTreeNode* StackElemType;
 typedef struct LinkStackNode
 {
@@ -130,15 +130,6 @@ typedef struct LinkStackNode
 	struct LinkStackNode* next;
 }LinkStackNode;
 typedef LinkStackNode* LinkStack;
-
-void LinkStackInit(LinkStack* pst);
-bool LinkStackIsEmpty(LinkStack* pst);
-void LinkStackPop(LinkStack* pst);
-void LinkStackPush(LinkStack* pst, StackElemType x);
-StackElemType LinkStackTop(LinkStack* pst);
-void LinkStackDestroy(LinkStack* pst);
-
-///////////////////////////////////////////////////////////////
 
 void LinkStackInit(LinkStack* pst)
 {
@@ -192,8 +183,8 @@ void LinkStackDestroy(LinkStack* pst)
 		cur = *pst;
 	}
 }
-//////////////////////////////////////////////////////
-
+/////////////////////////////////////////
+/////////////////////////////////////////¹ØÓÚ¶þ²æÊ÷¹¦ÄÜµÄÊµÏÖ
 void BinTreeInit(BinTree* t)
 {
 	*t = NULL;
@@ -254,17 +245,17 @@ BinTree BinTreeCreat_3(const char* vlr, const char* lvr, int n)//¸ù¾ÝÏÈÐòºÍÖÐÐò´
 	t->_right = BinTreeCreat_3(vlr+k+1,lvr+k+1,n-k-1);
 	return t;
 }
-BinTree BinTreeCreat_4(const char* lvr, const char* lrv, int n)//¸ù¾ÝÏÈÐòºÍÖÐÐò´´½¨¶þ²æÊ÷
+BinTree BinTreeCreat_4(const char* lvr, const char* lrv, int n)//¸ù¾ÝÖÐÐòºÍºóÐò´´½¨¶þ²æÊ÷
 {
 	if (n == 0)
 		return NULL;
 	int k = 0;
-	while (lrv[n-1] != lvr[k])
+	while (lrv[n-1] != lvr[k] && k < n)
 		++k;
 	BinTreeNode* t = (BinTreeNode*)malloc(sizeof(BinTreeNode));
 	t->data = lrv[n-1];
 	t->_left = BinTreeCreat_4(lvr, lrv, k);
-	t->_right = BinTreeCreat_4(lvr + k + 1, lvr + k, n - k - 1);
+	t->_right = BinTreeCreat_4(lvr + k + 1, lrv + k, n - k - 1);
 	return t;
 }
 int BinTreeSize(BinTree t)
