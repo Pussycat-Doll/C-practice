@@ -6,3 +6,10 @@
 #include<stdbool.h>
 #include<string.h>
 #define ElemType char
+
+void Swap(int* a, int* b)
+{
+	int temp = *a;
+	*a = *b;
+	*b = temp;
+}

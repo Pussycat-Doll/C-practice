@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClInclude Include="bintree.h" />
     <ClInclude Include="commen.h" />
+    <ClInclude Include="heap.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="test.c" />

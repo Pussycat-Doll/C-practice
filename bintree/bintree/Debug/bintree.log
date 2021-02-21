@@ -1,8 +1,3 @@
 ﻿  test.c
-E:\github\C-practice\bintree\bintree\bintree.h(21,64): warning C4031: 第二个形参表比第一个长
-E:\github\C-practice\bintree\bintree\bintree.h(21,64): warning C4028: 形参 2 与声明不同
-E:\github\C-practice\bintree\bintree\bintree.h(95,12): warning C4047: “return”:“QueElemType”与“int”的间接级别不同
-E:\github\C-practice\bintree\bintree\bintree.h(230,44): warning C4028: 形参 2 与声明不同
-E:\github\C-practice\bintree\bintree\bintree.h(231,1): warning C4029: 声明的形参表不同于定义
-E:\github\C-practice\bintree\bintree\bintree.h(183): warning C4715: “LinkStackTop”: 不是所有的控件路径都返回值
+E:\github\C-practice\bintree\bintree\heap.h(31,20): warning C4018: “<”: 有符号/无符号不匹配
   bintree.vcxproj -> E:\github\C-practice\bintree\Debug\bintree.exe
