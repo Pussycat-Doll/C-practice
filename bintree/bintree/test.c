@@ -2,7 +2,8 @@
 
 #include"commen.h"
 //#include"bintree.h"
-#include"heap.h"
+//#include"heap.h"
+#include"bst.h"
 
 //ABCDEFGH
 //CBEDFAGH
@@ -52,16 +53,46 @@ void main()
 	printf("\n");
 	*/
 
+	/*
 	int arr[] = { 27,15,19,18,28,34,65,49,25,37 };
 	int n = sizeof(arr) / sizeof(arr[0]);
 	MinHeap mhp;
 	HeapInit(&mhp, 10);
-
+	
 	for (int i = 0; i < n; ++i)
 	{
 		HeapInsert(&mhp, arr[i]);
 	}
 	HeapShow(mhp);
 
-	
+	HeapInsert(&mhp, 5);
+	HeapShow(mhp);
+
+	HeapErase(&mhp);
+	HeapShow(mhp);
+
+	int arr1[] = { 53,17,78,9,45,65,87,23 };
+	int n1 = sizeof(arr1) / sizeof(arr1[0]);
+	MinHeap hp;
+	HeapInit_1(&hp, arr1, n1);
+	HeapShow(hp);
+
+	HeapSort(&hp, n1);
+	HeapShow(hp);
+	*/
+
+	BSTree bst;
+	BstInit(&bst);
+	int arr[] = { 27,15,19,18,1,28,34,65,100,49,25,37 };
+	int n = sizeof(arr) / sizeof(arr[0]);
+	for (int i = 0; i < n; ++i)
+		BstInsert(&bst, arr[i]);
+	BstsortPrint(bst);
+	printf("\n");
+	printf("当前二叉搜索树的最小值为%d\n", BstMin(bst));
+	printf("当前二叉搜索树的最大值为%d\n", BstMax(bst));
+
+	BSTNode* node = BstFind(bst, 49);
+	BstErase(&bst, node);
+	BstsortPrint(bst);
 }

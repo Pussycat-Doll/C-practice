@@ -1,3 +1,2 @@
 ﻿  test.c
-E:\github\C-practice\bintree\bintree\heap.h(31,20): warning C4018: “<”: 有符号/无符号不匹配
   bintree.vcxproj -> E:\github\C-practice\bintree\Debug\bintree.exe

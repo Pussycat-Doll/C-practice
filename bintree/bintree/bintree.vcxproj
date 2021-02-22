@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="bintree.h" />
+    <ClInclude Include="bst.h" />
     <ClInclude Include="commen.h" />
     <ClInclude Include="heap.h" />
   </ItemGroup>
