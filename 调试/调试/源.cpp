@@ -364,78 +364,135 @@ void ListCreat_Tail(List* phead)
 //    }
 //    return 0;
 //}
+//
+//#include<iostream>
+//using namespace std;
+//  struct ListNode {
+//      int val;
+//      ListNode *next;
+//      ListNode() : val(0), next(nullptr) {}
+//      ListNode(int x) : val(x), next(nullptr) {}
+//      ListNode(int x, ListNode *next) : val(x), next(next) {}
+// };
+//
+//
+//bool isPalindrome(ListNode* head)
+//{
+//    if (head == nullptr || head->next == nullptr)
+//        return true;
+//    ListNode* slow = head;
+//    ListNode* fast = head;
+//    ListNode* firsthead = head;
+//    ListNode* secondhead = nullptr;
+//    while (fast != nullptr && fast->next != nullptr)
+//    {
+//        fast = fast->next->next;
+//        slow = slow->next;
+//    }
+//    if (fast == nullptr)
+//        secondhead = slow;
+//    else
+//        secondhead = slow->next;
+//
+//    ListNode* cur = secondhead;
+//    ListNode* p = secondhead->next;
+//    cur->next = nullptr;
+//
+//    while (p != nullptr)
+//    {
+//        cur = p;
+//        p = p->next;
+//        cur->next = secondhead;
+//        secondhead = cur;
+//    }
+//    while (firsthead != nullptr && secondhead != nullptr)
+//    {
+//        if (firsthead->val == secondhead->val)
+//        {
+//            firsthead = firsthead->next;
+//            secondhead = secondhead->next;
+//        }
+//        else
+//            return false;
+//    }
+//    return true;
+//}
+//
+//int main()
+//{
+//    ListNode* head = (ListNode*)malloc(sizeof(ListNode));
+//    head->val = 1;
+//
+//    ListNode* p = (ListNode*)malloc(sizeof(ListNode));
+//    p->val = 2;
+//    head->next = p;
+//
+//    ListNode* q = (ListNode*)malloc(sizeof(ListNode));
+//    q->val = 2;
+//    p->next = q;
+//
+//    ListNode* x = (ListNode*)malloc(sizeof(ListNode));
+//    x->val = 1;
+//    q->next = x;
+//    x->next = nullptr;
+//
+//    cout<<isPalindrome(head);
+//    return 0;
+//}
+
+//#include<stdio.h>
+//#define MAX_SIZE 255
+//void main()
+//{
+//    unsigned char buff[MAX_SIZE + 1];
+//    unsigned char i;
+//    for (i = 0; i <= MAX_SIZE; i++)
+//    {
+//        buff[i] = i;
+//    }
+//}
 
 #include<iostream>
+#include<string>
 using namespace std;
-  struct ListNode {
-      int val;
-      ListNode *next;
-      ListNode() : val(0), next(nullptr) {}
-      ListNode(int x) : val(x), next(nullptr) {}
-      ListNode(int x, ListNode *next) : val(x), next(next) {}
- };
 
-
-bool isPalindrome(ListNode* head)
+typedef struct BinTreeNode
 {
-    if (head == nullptr || head->next == nullptr)
-        return true;
-    ListNode* slow = head;
-    ListNode* fast = head;
-    ListNode* firsthead = head;
-    ListNode* secondhead = nullptr;
-    while (fast != nullptr && fast->next != nullptr)
-    {
-        fast = fast->next->next;
-        slow = slow->next;
-    }
-    if (fast == nullptr)
-        secondhead = slow;
-    else
-        secondhead = slow->next;
+    char data;
+    BinTreeNode* left;
+    BinTreeNode* right;
+}BinTreeNode;
+typedef BinTreeNode* BinTree;
 
-    ListNode* cur = secondhead;
-    ListNode* p = secondhead->next;
-    cur->next = nullptr;
-
-    while (p != nullptr)
-    {
-        cur = p;
-        p = p->next;
-        cur->next = secondhead;
-        secondhead = cur;
-    }
-    while (firsthead != nullptr && secondhead != nullptr)
-    {
-        if (firsthead->val == secondhead->val)
-        {
-            firsthead = firsthead->next;
-            secondhead = secondhead->next;
-        }
-        else
-            return false;
-    }
-    return true;
+BinTreeNode* BinTreeCreat(const string str,int* i)
+{
+    if (*i == str.size() || str[*i] == '#')
+        return nullptr;
+    BinTreeNode* t = (BinTreeNode*)malloc(sizeof(BinTreeNode));
+    t->data = str[*i];
+    ++(*i);
+    t->left = BinTreeCreat(str,i);
+    ++(*i);
+    t->right = BinTreeCreat(str,i);
+    return t;
 }
-
+void InOrder(BinTree t)
+{
+    if (t == nullptr)
+        return;
+    InOrder(t->left);
+    cout << t->data << " ";
+    InOrder(t->right);
+}
 int main()
 {
-    ListNode* head = (ListNode*)malloc(sizeof(ListNode));
-    head->val = 1;
 
-    ListNode* p = (ListNode*)malloc(sizeof(ListNode));
-    p->val = 2;
-    head->next = p;
-
-    ListNode* q = (ListNode*)malloc(sizeof(ListNode));
-    q->val = 2;
-    p->next = q;
-
-    ListNode* x = (ListNode*)malloc(sizeof(ListNode));
-    x->val = 1;
-    q->next = x;
-    x->next = nullptr;
-
-    cout<<isPalindrome(head);
+    BinTree t;
+    t = nullptr;
+    string str;
+    cin >> str;
+    int index = 0;
+    t = BinTreeCreat(str,&index);
+    InOrder(t);
     return 0;
 }
