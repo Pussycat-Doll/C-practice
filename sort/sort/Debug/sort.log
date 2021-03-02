@@ -1,0 +1,6 @@
+﻿  test.c
+E:\github\待提交\sort\sort\sort.h(97,15): warning C4244: “函数”: 从“time_t”转换到“unsigned int”，可能丢失数据
+E:\github\待提交\sort\sort\sort.h(104,9): warning C4477: “printf”: 格式字符串“%u”需要类型“unsigned int”的参数，但可变参数 1 拥有了类型“time_t”
+E:\github\待提交\sort\sort\sort.h(104,9): message : 请考虑在格式字符串中使用“%llu”
+E:\github\待提交\sort\sort\sort.h(104,9): message : 请考虑在格式字符串中使用“%I64u”
+  sort.vcxproj -> E:\github\待提交\sort\Debug\sort.exe
