@@ -2,7 +2,7 @@
 
 void main()
 {
-	int arr[] = { 49,38,65,97,76,13,27,49 };
+	int arr[] = { 49,38,65,97,76,13,49,27 };
 	int n = sizeof(arr) / sizeof(arr[0]);
 
 	Printarr(arr, 0, n);
@@ -14,7 +14,10 @@ void main()
 	//SelectSort_1(arr, 0, n);
 	//HeapSort(arr, 0, n);
 	//BubbleSort(arr,0,n);
-	QuickSort(arr, 0, n-1);
+	//QuickSort(arr, 0, n-1);
+	//QuickSortNor(arr, 0, n - 1);
+	//MergeSort(arr, n);
+	CountSort(arr, n);
 	Printarr(arr, 0, n);
 
 	//TestSortEfficiency();

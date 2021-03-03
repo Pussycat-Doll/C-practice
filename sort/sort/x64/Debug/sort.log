@@ -1,0 +1,8 @@
+﻿  test.c
+E:\github\C-practice\sort\sort\sort.h(97,15): warning C4244: “函数”: 从“time_t”转换到“unsigned int”，可能丢失数据
+E:\github\C-practice\sort\sort\sort.h(104,9): warning C4477: “printf”: 格式字符串“%u”需要类型“unsigned int”的参数，但可变参数 1 拥有了类型“time_t”
+E:\github\C-practice\sort\sort\sort.h(104,9): message : 请考虑在格式字符串中使用“%llu”
+E:\github\C-practice\sort\sort\sort.h(104,9): message : 请考虑在格式字符串中使用“%Iu”
+E:\github\C-practice\sort\sort\sort.h(104,9): message : 请考虑在格式字符串中使用“%I64u”
+E:\github\C-practice\sort\sort\stack.h(72): warning C4715: “LinkStackTop”: 不是所有的控件路径都返回值
+  sort.vcxproj -> E:\github\C-practice\sort\x64\Debug\sort.exe

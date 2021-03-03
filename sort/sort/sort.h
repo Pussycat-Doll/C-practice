@@ -1,6 +1,6 @@
 #pragma once
 #include"commen.h"
-
+#include"stack.h"
 void Printarr(int arr[], int left, int right)
 {
 	for (int i = left; i < right; ++i)
@@ -261,8 +261,33 @@ int Partition_2(int* arr, int start, int end)//挖坑法(不断的填坑，挖坑)
 	arr[start] = key;
 	return start;
 }
+int GetMid(int* arr, int begin, int end)//三位取中法
+{
+	int mid = (begin + end) >> 1;
+	if (arr[begin] > arr[mid])
+	{
+		if (arr[begin] < arr[end])   //end>begin>mid
+			return begin;
+		else if (arr[mid] > arr[end])//begin>mid>end
+			return mid;
+		else                         //begin>end>mid
+			return end;
+	}
+	else//begin<mid
+	{
+		if (arr[begin] > arr[end])    //mid>begin>end
+			return begin;
+		else if (arr[end] > arr[mid]) //end>mid>begin
+			return mid;
+		else                          //mid>end>begin
+			return end;
+	}
+}
 int Partition_3(int* arr, int start, int end)//前后指针法
 {
+	int midindex = GetMid(arr, start, end);
+	swap(&arr[midindex], &arr[end]);
+
 	int key = arr[end];
 	int prev = start - 1;//prev找大
 	int cur = start;//找小
@@ -276,6 +301,7 @@ int Partition_3(int* arr, int start, int end)//前后指针法
 	swap(&arr[prev], &arr[end]);
 	return prev;
 }
+
 void QuickSort(int* arr, int begin, int end)
 {
 	if (begin >= end)
@@ -288,4 +314,99 @@ void QuickSort(int* arr, int begin, int end)
 	QuickSort(arr, keyindex + 1, end);
 	//时间复杂度:O（n*logn）
 	//快排什么时候很慢——数组有序的时候
+}
+void QuickSortNor(int* arr, int begin, int end)//快排非递归写法
+{
+	LinkStack st;
+	LinkStackInit(&st);
+	LinkStackPush(&st, begin);
+	LinkStackPush(&st, end);
+
+	while (!LinkStackIsEmpty(&st))
+	{
+		int right = LinkStackTop(&st);
+		LinkStackPop(&st);
+		int left = LinkStackTop(&st);
+		LinkStackPop(&st);
+
+		int pos = Partition_2(arr, left, right);
+		//[left,pos-1] pos [pos+1,right]
+		if (left < pos-1)
+		{
+			LinkStackPush(&st, left);
+			LinkStackPush(&st, pos - 1);
+		}
+		if (pos + 1 < right)
+		{
+			LinkStackPush(&st, pos + 1);
+			LinkStackPush(&st, right);
+		}
+	}
+	LinkStackDestroy(&st);
+}
+
+void _MergeSort(int* arr, int* tmp, int begin, int end)
+{
+	if (begin >= end)
+		return;
+	int mid = (begin + end) >> 1;
+
+	//将无序归并成两个有序
+	_MergeSort(arr, tmp, begin, mid);
+	_MergeSort(arr, tmp, mid+1, end);
+
+	//将两段有序归并到一起
+	//[begin,mid][mid+1,end]
+	int begin1 = begin,end1 = mid;
+	int begin2 = mid + 1,end2 = end;
+	int tmpi = begin;
+
+	while (begin1 <= end1 && begin2 <= end2)
+	{
+		if (arr[begin1] < arr[begin2])
+			tmp[tmpi++] = arr[begin1++];
+		else
+			tmp[tmpi++] = arr[begin2++];
+	}
+	while(begin1 <= end1)
+		tmp[tmpi++] = arr[begin1++];
+	while (begin2 <= end2)
+		tmp[tmpi++] = arr[begin2++];
+	memcpy(arr + begin, tmp + begin, sizeof(int) * (end - begin + 1));
+}
+void MergeSort(int* arr, int n)
+{
+	int* tmp = (int*)malloc(sizeof(int) * n);
+	_MergeSort(arr, tmp, 0, n - 1);
+	free(tmp);
+}
+
+void CountSort(int* arr, int n)
+{
+	int min = arr[0], max = arr[0];
+	for (int i = 0; i < n; ++i)
+	{
+		if (arr[i] > max)
+			max = arr[i];
+		if (arr[i] < min)
+			min = arr[i];
+	}
+	int range = max-min + 1;
+	int* countarr = malloc(sizeof(int) * range);
+	memset(countarr, 0, sizeof(int) * range);
+	for (int i = 0; i < n; ++i)//统计次数
+	{
+		++countarr[arr[i]-min];
+	}
+	int j = 0;
+	for (int i = 0; i < range; ++i)//根据次数排序
+	{
+		while (countarr[i] > 0)
+		{
+			arr[j++] = i + min;
+			--countarr[i];
+		}	
+	}
+	//时间复杂度：O(Max(range,N))
+	//空间复杂度：O(range)
 }

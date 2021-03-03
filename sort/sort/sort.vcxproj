@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClInclude Include="commen.h" />
     <ClInclude Include="sort.h" />
+    <ClInclude Include="stack.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="test.c" />
