@@ -1,2 +1,4 @@
 ﻿  源.cpp
-  list.vcxproj -> D:\比特科技\比特代码\list\Debug\list.exe
+E:\github\C-practice\list\list\list.h(57): warning C4172: 返回局部变量或临时变量的地址: tmp
+E:\github\C-practice\list\list\list.h(57): warning C4172: 返回局部变量或临时变量的地址: tmp
+  list.vcxproj -> E:\github\C-practice\list\Debug\list.exe

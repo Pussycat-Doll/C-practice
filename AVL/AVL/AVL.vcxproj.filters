@@ -26,5 +26,14 @@
     <ClInclude Include="commen.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="RBT.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="mymap.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="myset.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -45,7 +45,7 @@ namespace my_vector
 			delete[] _start;
 			_start = _finish = _finishofstorage = nullptr;
 		}
-		vector<T>& operator=(const vector<T>& v)
+		vector<T>& operator=(vector<T>& v)
 		{
 			if (this != &v)
 			{

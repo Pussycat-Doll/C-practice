@@ -144,6 +144,9 @@
   <ItemGroup>
     <ClInclude Include="AVL Tree.h" />
     <ClInclude Include="commen.h" />
+    <ClInclude Include="mymap.h" />
+    <ClInclude Include="myset.h" />
+    <ClInclude Include="RBT.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
