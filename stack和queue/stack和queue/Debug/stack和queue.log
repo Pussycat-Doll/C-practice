@@ -1,0 +1,9 @@
+﻿  test.cpp
+E:\github\待提交\stack和queue\stack和queue\test.cpp(49,12): warning C4244: “参数”: 从“time_t”转换到“unsigned int”，可能丢失数据
+E:\github\待提交\stack和queue\stack和queue\test.cpp(95,15): warning C4101: “com”: 未引用的局部变量
+E:\github\待提交\stack和queue\stack和queue\priority_queue.h(56,17): warning C4018: “<”: 有符号/无符号不匹配
+E:\github\待提交\stack和queue\stack和queue\priority_queue.h(53): message : 在编译 类 模板 成员函数“void mystl::priority_queue<int,std::vector<int,std::allocator<int>>,mystl::greater<int>>::adjust_down(int)”时
+E:\github\待提交\stack和queue\stack和queue\priority_queue.h(21): message : 查看对正在编译的函数 模板 实例化“void mystl::priority_queue<int,std::vector<int,std::allocator<int>>,mystl::greater<int>>::adjust_down(int)”的引用
+E:\github\待提交\stack和queue\stack和queue\priority_queue.h(97): message : 查看对正在编译的 类 模板 实例化“mystl::priority_queue<int,std::vector<int,std::allocator<int>>,mystl::greater<int>>”的引用
+E:\github\待提交\stack和queue\stack和queue\priority_queue.h(60,17): warning C4018: “<”: 有符号/无符号不匹配
+  stack和queue.vcxproj -> E:\github\待提交\stack和queue\Debug\stack和queue.exe
