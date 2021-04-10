@@ -72,6 +72,7 @@
   <ItemGroup>
     <ClInclude Include="CentralCache.h" />
     <ClInclude Include="Common.h" />
+    <ClInclude Include="ConcurrentMalloc.h" />
     <ClInclude Include="Pagecache.h" />
     <ClInclude Include="ThreadCache.h" />
   </ItemGroup>

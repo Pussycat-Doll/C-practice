@@ -1,13 +1,20 @@
 #pragma once
 
 #include<iostream>
-#include<cassert>
-using namespace std;
+#include<assert.h>
+#include<map>
+#include<thread>
+#ifdef _WIN32
+#include<windows.h>
+#endif // _WIN32
+
+using std::cout;
+using std::endl;
 
 const size_t MAX_SIZE = 64 * 1024;//64k 
 const size_t NFREELIST = MAX_SIZE / 8;//freelist的大小
 const size_t MAX_PAGES = 129;//可申请页数的最大值(给129，是方便下标对齐，1对准下标1,128对准下标128)
-
+const size_t PAGE_SHIFT = 12; //4k也就是（1>>12）
 inline void*& NextObj(void* obj)//获取下一个对象，下一个对象存在头四个字节(32位)/头八个字节(64位)之中
 {
 	return *((void**)obj);//对void**解引用，返回void*的大小，32位平台4个字节，64位平台8个字节
@@ -19,13 +26,15 @@ public:
 	{
 		NextObj(obj) = _freelist;
 		_freelist = obj;
+		++_num;
 	}
-	void PushRange(void* head, void* tail)//插入一连串的对象
+	void PushRange(void* head, void* tail,size_t num)//插入一连串的对象
 	{
 		NextObj(tail) = _freelist;
 		_freelist = head;
+		_num += num;
 	}
-	size_t PopRange(void* start, void* end, size_t num)//返回实际拿到的内存对象个数
+	size_t PopRange(void*& start, void*& end, size_t num)//返回实际拿到的内存对象个数
 	{
 		size_t actuallNum = 0;
 		void* prev = nullptr;
@@ -38,21 +47,32 @@ public:
 		start = _freelist;
 		end = prev;
 		_freelist = cur;
+		_num -= actuallNum;
 		return actuallNum;
 	}
 	void* Pop()//头删，拿一个对象
 	{
 		void* obj = _freelist;
 		_freelist = NextObj(obj); 
-
+		--_num;
 		return obj;
 	}
 	bool Empty()//判空
 	{
 		return _freelist == nullptr;
 	}
+	size_t Num()
+	{
+		return _num;
+	}
+	void Clear()
+	{
+		_freelist = nullptr;
+		_num = 0;
+	}
 private:
 	void* _freelist = nullptr;
+	size_t _num = 0;//内存对象的个数
 };
 
 class Sizeclass
@@ -75,11 +95,11 @@ public:
 			return size / 8;
 	}内存池是比较注重效率的，但是除法(用减法来做的)和取模运算效率是比较低的，所以要对其进行优化，如下*/
 	//按照8byte对齐
-	//[9,16]+7=[16,23]-->二进制表示：[1 0000,1 0111] 16 8 4 2 1 & ~7(1 1000) --> (1 0000)16
+	//[9,16]+7=[16,23]-->二进制表示：[1 0000,1 0111] 16 8 4 2 1 & ~7(1 1000) --> (1 0000)即为16
 	//按照16byte对齐
-	//[1,16]+15=[16,31]-->二进制表示：[01 0000,01 1111] 32 16 8 4 2 1 & ~15(11 0000) -->(01 0000)16
-	//[17,32]+15=[32,47]-->二进制表示：[010 0001,010 0111] 64 32 16 8 4 2 1 & ~15(111 0000) -->(010 0000)32
-	static size_t _RoundUP(size_t size, int alignment)//alignment为对齐数
+	//[1,16]+15=[16,31]-->二进制表示：[01 0000,01 1111] 32 16 8 4 2 1 & ~15(11 0000) -->(01 0000)即为16
+	//[17,32]+15=[32,47]-->二进制表示：[010 0001,010 0111] 64 32 16 8 4 2 1 & ~15(111 0000) -->(010 0000)即为32
+	static size_t _RoundUP(size_t size, int alignment)//alignment为对齐数，size要申请哒大小
 	{
 		return (size + alignment - 1)&(~(alignment - 1));
 	}
@@ -159,7 +179,7 @@ public:
 		size_t num = NumMoveSize(size);//申请的内存对象的个数
 		size_t npage = num*size;//总的字节数
 
-		npage >>= 12;//2^12=4k一页
+		npage >>= 12;//2^12=4k一页(右移12页，就是除以4k)
 		if (npage == 0)
 			npage = 1;//最少返回一页
 		return npage;
@@ -170,26 +190,32 @@ public:
 };
 //////////////////////////////////////////////////////////////////////
 //span 跨度--管理以页为单位的内存对象，本质是方便做合并，解决内存碎片
-//当是在32位平台时，int还足够去显示页码 2^32/2^12 == 2^20 
-//但是在64位平台中    2^64/2^12(4k) == 2^52
+//当是在32位平台时，int还足够去显示页码 2^32/2^12(4k) == 2^20 页
+//但是在64位平台中    2^64/2^12(4k) == 2^52，用int不能容纳全部的页码
 //所以对于_pageid的类型，需要用一个条件编译来选择合适的一种
+//long long         ----> 2^64
+//unsigned long long----> 2^63 (去掉了负数也就是一半)
+//////////////////////////////////////////////////////////////////////////////
+//针对windows平台
 #ifdef _WIN32//32位平台
 typedef unsigned int PAGE_ID;
 #else//64位平台，如果要在Linux平台跑该程序，还需要再单独处理再写另一种适合Linux平台的
-typedef unsigned long long PAGE_ID;
+typedef unsigned long long PAGE_ID; 
 #endif
 
 struct Span
 {
-	PAGE_ID _pageid;//页号
-	int _pagesize;//页的数量
+	PAGE_ID _pageid = 0;//页号
+	PAGE_ID _pagesize = 0;//页的数量
+
 	FreeList _freelist;//内存对象的自由链表
-	int _usecount;//内存块对象使用的数量
+	size_t _objSize = 0;//自由链表对象大小
+	int _usecount = 0;//内存块对象使用的数量
 	//size_t objectsize;//对象大小
 
 	//双向循环的，方便取走或插入其中的一个
-	Span* _next;
-	Span* _prev;
+	Span* _next = nullptr;
+	Span* _prev = nullptr;
 };
 class SpanList
 {
@@ -204,7 +230,7 @@ public:
 	{
 		return _head->_next;
 	}
-	Span* End()
+	Span* End()//带头双向循环链表的end就是_head
 	{
 		return _head;
 	}
@@ -218,7 +244,7 @@ public:
 	}
 	void PushBack(Span* newspan)//尾插
 	{
-		Insert(_head->_prev, newspan);
+		Insert(_head, newspan);
 	}
 	void PopBack()//尾删
 	{
@@ -243,8 +269,23 @@ public:
 		next->_prev = prev;
 		//delete pos;在这里要删除的span其实不是真的将其delete掉，而是将它还给pagecache,让pagecache对其进行合并
 	}
-
-	
+	bool Empty()
+	{
+		return Begin() == End();
+	}
 private:
 	Span* _head;
 };
+
+//向系统申请numpage页内存挂到自由链表
+inline static void* SystemAlloc(size_t numpage)
+{
+#ifdef _WIN32
+	void* ptr = VirtualAlloc(0, numpage * (1 << PAGE_SHIFT), MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
+#else
+	//brk(),mmap等
+#endif // _WIN32
+	if (ptr == nullptr)
+		throw std::bad_alloc();
+	return ptr;
+}

@@ -8,7 +8,7 @@ public:
 	size_t FetchRangeObj(void*& start, void*& end, size_t num, size_t size);
 
 	//当内存对象释放够一定数量时，就将其归还到span
-	void ReleaseListToSpans(void* start, size_t size);
+	void ReleaseListToSpans(void* start);
 
 	//从sapnlist 或者 pagecache中获取一个span
 	Span* GetOneSpan(size_t size);

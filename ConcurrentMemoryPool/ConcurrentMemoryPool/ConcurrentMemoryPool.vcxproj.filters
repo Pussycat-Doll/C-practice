@@ -41,5 +41,8 @@
     <ClInclude Include="Pagecache.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="ConcurrentMalloc.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

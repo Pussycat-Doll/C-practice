@@ -6,7 +6,7 @@ void* ThreadCache::Allocte(size_t size)//申请内存
 {
 	size_t index = Sizeclass::ListIndex(size);//计算申请内存在freelist中的下标
 	FreeList& freeList = _freelist[index];
-	if (!freeList.Empty())//有内存
+	if (!freeList.Empty())//线程缓存中有内存
 		return freeList.Pop();
 	else//没有内存,要从CentralCache取内存
 	{
@@ -19,12 +19,26 @@ void* ThreadCache::Allocte(size_t size)//申请内存
 void ThreadCache::Deallocte(void* ptr,size_t size)
 {
 	size_t index = Sizeclass::ListIndex(size);
+	//根据内存大小计算其在自由链表中的下标
 	FreeList& freeList = _freelist[index];
 	freeList.Push(ptr);//挂上自由链表
-	//if ()
+
+	//对象个数满足之前内存对齐申请的一批个数，也就那一批就都使用了
+	size_t num = Sizeclass::NumMoveSize(size);
+	if (freeList.Num() >= num)
 	{//当释放的内存太多，就直接还回CentralCache
-		//ReleaseToCentralCache();
+		ListTooLong(freeList,num);
 	}
+}
+void ThreadCache::ListTooLong(FreeList& freeList, size_t num)
+{
+	void* start = nullptr, * end = nullptr;
+	//先从自由链表弹出
+	freeList.PopRange(start, end, num);
+
+	NextObj(end) = nullptr;
+	//换给下一层
+	centralcacheInst.ReleaseListToSpans(start);
 }
 //独立测试threadcache
 //从中心缓存获取Num个对象，返回其中一个的指针，剩下的num-1被挂到freelist中等待申请
@@ -52,18 +66,21 @@ void ThreadCache::Deallocte(void* ptr,size_t size)
 
 void* ThreadCache::FetchFromCentralCache(size_t size)
 {
+	//根据一次要申请内存的大小分配一定数量的内存对象
+	//要的小了多给几个，要的大的少给几个
 	size_t num = Sizeclass::NumMoveSize(size);
 	//从centralcache中获取内存
 	void* start = nullptr;
 	void* end = nullptr;
+	//ActuallNum 实际给内存对象的个数
 	size_t ActuallNum = centralcacheInst.FetchRangeObj(start, end, num, size);
-	if (ActuallNum == 1)//至少获取一个内存对象，失败会抛异常
+	if (ActuallNum == 1)//至少获取一个内存对象，因为0个也就是申请失败会抛异常
 		return start;
 	else//多个内存对象被申请
 	{
 		size_t index = Sizeclass::ListIndex(size);
 		FreeList& list = _freelist[index];
-		list.PushRange(NextObj(start), end);//取走要用的一个，再把剩下的挂起来
+		list.PushRange(NextObj(start), end, ActuallNum-1);//取走要用的一个，再把剩下的挂起来，备用
 		return start;
 	}
 }

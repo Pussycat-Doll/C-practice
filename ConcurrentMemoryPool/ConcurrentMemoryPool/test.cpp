@@ -2,10 +2,10 @@
 #include"ThreadCache.h"
 
 #include<vector>
-void UnitThreadCache()
+void UnitThreadCache1()
 {
 	ThreadCache tc;
-	vector<void* > v;
+	std::vector<void* > v;
 	for (size_t i = 0; i < 21; ++i)
 	//为什么要申请21次内存？
 		//(num==20)让程序运行的时候既走if语句，也走一else语句，都试试(白盒测试)
@@ -54,10 +54,72 @@ void UnitTestSizeClass()
 	cout << Sizeclass::ListIndex(8 * 1024 + 1) << endl;
 	cout << Sizeclass::ListIndex(64 * 1024) << endl << endl;
 }
+void UnitTestSystemAlloc()
+{
+	//检测指针ptr是4k对齐的
+	void* ptr = SystemAlloc(MAX_PAGES - 1);
+	//根据地址算页号
+	PAGE_ID id = (PAGE_ID)ptr >> PAGE_SHIFT;
+	//再根据页号算起始地址
+	void* ptrshift = (void*)(id << PAGE_SHIFT);
+
+	//按照8个字节切对象
+	char* obj1 = (char*)ptr;
+	char* obj2 = (char*)ptr + 8;
+	char* obj3 = (char*)ptr + 16;
+	PAGE_ID id1 = (PAGE_ID)obj1 >> PAGE_SHIFT;
+	PAGE_ID id2 = (PAGE_ID)obj2 >> PAGE_SHIFT;
+	PAGE_ID id3 = (PAGE_ID)obj3 >> PAGE_SHIFT;
+}
+void UnitTestThreadCache2()
+{
+	ThreadCache tc;
+	std::vector<void* > v;
+	size_t sz = 7;
+	for (size_t i = 0; i < Sizeclass::NumMoveSize(sz); ++i)
+		//为什么要申请21次内存？
+			//(num==20)让程序运行的时候既走if语句，也走一else语句，都试试(白盒测试)
+	{
+		v.push_back(tc.Allocte(sz));//申请sz个字节
+	}
+	for (size_t i = 0; i < 21; ++i)
+	{
+		printf("[%d]->%p\n", i, v[i]);
+	}
+	for (auto ptr : v)
+	{
+		tc.Deallocte(ptr, 7);
+	}
+}
+#include "ConcurrentMalloc.h"
+void func1()
+{
+	ThreadCache tc;
+	std::vector<void* > v;
+	size_t sz = 7;
+	for (size_t i = 0; i < Sizeclass::NumMoveSize(sz)+1; ++i)
+		//为什么要申请21次内存？
+			//(num==20)让程序运行的时候既走if语句，也走一else语句，都试试(白盒测试)
+	{
+		v.push_back(ConcurrentMalloc(sz));//申请sz个字节
+	}
+	for (size_t i = 0; i < 21; ++i)
+	{
+		printf("[%d]->%p\n", i, v[i]);
+	}
+	for (auto ptr : v)
+	{
+		ConcurrentFree(ptr);
+	}
+}
 int main()
 {
-	UnitTestSizeClass();
+	//UnitTestThreadCache2();
+	//UnitTestSystemAlloc();
+	//UnitTestSizeClass();
 	//UnitThreadCache();
+	
+
 	system("pause");
 	return 0;
 }
