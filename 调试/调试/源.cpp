@@ -680,14 +680,15 @@ void ListCreat_Tail(List* phead)
 
 #include<iostream>
 #include<unordered_map>
+#include<unordered_set>
 #include<string>
 using namespace std;
 
 char firstUniqChar(string s) {
-    unordered_map<char, int> mp;
+    unordered_set<char, int> mp;
     for (auto e : s)
     {
-        mp[e]++;
+        mp.insert(make_pait(e,1));
     }
     for (auto it : mp)
     {

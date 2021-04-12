@@ -3,7 +3,9 @@
 #include<iostream>
 #include<assert.h>
 #include<map>
+#include<unordered_map>
 #include<thread>
+#include<mutex>
 #ifdef _WIN32
 #include<windows.h>
 #endif // _WIN32
@@ -99,7 +101,7 @@ public:
 	//按照16byte对齐
 	//[1,16]+15=[16,31]-->二进制表示：[01 0000,01 1111] 32 16 8 4 2 1 & ~15(11 0000) -->(01 0000)即为16
 	//[17,32]+15=[32,47]-->二进制表示：[010 0001,010 0111] 64 32 16 8 4 2 1 & ~15(111 0000) -->(010 0000)即为32
-	static size_t _RoundUP(size_t size, int alignment)//alignment为对齐数，size要申请哒大小
+	static size_t _RoundUP(size_t size, size_t alignment)//alignment为对齐数，size要申请哒大小
 	{
 		return (size + alignment - 1)&(~(alignment - 1));
 	}
@@ -273,11 +275,20 @@ public:
 	{
 		return Begin() == End();
 	}
+	void Lock()
+	{
+		_mtx.lock();
+	}
+	void UnLock()
+	{
+		_mtx.unlock();
+	}
 private:
 	Span* _head;
+	std::mutex _mtx;
 };
 
-//向系统申请numpage页内存挂到自由链表
+//向系统申请numpage页内存挂到自 由链表
 inline static void* SystemAlloc(size_t numpage)
 {
 #ifdef _WIN32
@@ -288,4 +299,13 @@ inline static void* SystemAlloc(size_t numpage)
 	if (ptr == nullptr)
 		throw std::bad_alloc();
 	return ptr;
+}
+inline static void SystemFree(void* ptr)
+{
+#ifdef _WIN32
+	VirtualFree(ptr,0,MEM_RELEASE);
+	//brk(),mmap等
+#else
+#endif // _WIN32
+
 }

@@ -2,8 +2,9 @@
 #include"Pagecache.h"
 
 
-Span* Pagecache::NewSpan(size_t numpage)
+Span* Pagecache::_NewSpan(size_t numpage)
 {
+	//_spanlists[numpage].Lock();不能加在函数内部，因为这里会递归
 	if (!_spanlists[numpage].Empty())//有相同大小的span,可以直接取走
 	{
 		Span* span = _spanlists[numpage].Begin();
@@ -46,8 +47,16 @@ Span* Pagecache::NewSpan(size_t numpage)
 
 	_spanlists[bigspan->_pagesize].PushFront(bigspan);
 	//再进行调用自己，进行分割
-	return NewSpan(numpage);
+	return _NewSpan(numpage);
 }
+Span* Pagecache::NewSpan(size_t numpage)
+{
+	_mtx.lock();
+	Span* span = _NewSpan(numpage);
+	_mtx.unlock();
+	return span;
+}
+
 Span* Pagecache::GetIdToSpan(PAGE_ID id)
 {
 	//std::map<PAGE_ID, Span*>::iterator it = _idSpanMap.find(id);
@@ -75,6 +84,10 @@ void Pagecache::ReleaseSpanToPageCache(Span* span)
 		{
 			break;
 		}
+		if (span->_pagesize + prevSpan->_pagesize >= MAX_PAGES)//合并之后的最大页数不能超过最大页，超出最大页就不要合并。、
+		{
+			break;
+		}
 		//前一个页可以合并
 		span->_pageid = prevSpan->_pageid;
 		span->_pagesize += prevSpan->_pagesize;
@@ -96,9 +109,11 @@ void Pagecache::ReleaseSpanToPageCache(Span* span)
 		Span* nextSpan = nextIt->second;
 		if (nextSpan->_usecount != 0)//后面页号还在使用
 			break;
+		if (span->_pagesize + nextSpan->_pagesize >= MAX_PAGES)//
+			break;
 		span->_pagesize += nextSpan->_pagesize;
 
-		for (PAGE_ID i = 0; i < nextSpan->_pageid; ++i)
+		for (PAGE_ID i = 0; i < nextSpan->_pagesize; ++i)
 		{
 			_idSpanMap[nextSpan->_pageid + i] = span;
 		}

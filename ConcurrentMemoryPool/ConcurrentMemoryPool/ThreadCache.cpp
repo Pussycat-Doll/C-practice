@@ -27,18 +27,18 @@ void ThreadCache::Deallocte(void* ptr,size_t size)
 	size_t num = Sizeclass::NumMoveSize(size);
 	if (freeList.Num() >= num)
 	{//当释放的内存太多，就直接还回CentralCache
-		ListTooLong(freeList,num);
+		ListTooLong(freeList,num,size);
 	}
 }
-void ThreadCache::ListTooLong(FreeList& freeList, size_t num)
+void ThreadCache::ListTooLong(FreeList& freeList, size_t num,size_t size)
 {
 	void* start = nullptr, * end = nullptr;
 	//先从自由链表弹出
 	freeList.PopRange(start, end, num);
 
 	NextObj(end) = nullptr;
-	//换给下一层
-	centralcacheInst.ReleaseListToSpans(start);
+	//归给下一层
+	CentralCache::GetInsatnce().ReleaseListToSpans(start,size);
 }
 //独立测试threadcache
 //从中心缓存获取Num个对象，返回其中一个的指针，剩下的num-1被挂到freelist中等待申请
@@ -73,7 +73,7 @@ void* ThreadCache::FetchFromCentralCache(size_t size)
 	void* start = nullptr;
 	void* end = nullptr;
 	//ActuallNum 实际给内存对象的个数
-	size_t ActuallNum = centralcacheInst.FetchRangeObj(start, end, num, size);
+	size_t ActuallNum = CentralCache::GetInsatnce().FetchRangeObj(start, end, num, size);
 	if (ActuallNum == 1)//至少获取一个内存对象，因为0个也就是申请失败会抛异常
 		return start;
 	else//多个内存对象被申请

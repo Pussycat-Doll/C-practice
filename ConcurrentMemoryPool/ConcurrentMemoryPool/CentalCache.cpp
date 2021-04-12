@@ -24,7 +24,7 @@ Span* CentralCache::GetOneSpan(size_t size)
 	}
 	//此时，centralcache中没有我们需要的内存的对象，需要从pagecache中去取
 	size_t numpage = Sizeclass::NumMovePage(size);
-	Span* span = pagecaCheInst.NewSpan(numpage);
+	Span* span = Pagecache::GetInstance().NewSpan(numpage);
 
 	//把span对象按照size大小切割并挂到span的freelist当中。
 	char* start = (char*)(span->_pageid << 12);//左移12相当于乘以4K
@@ -44,22 +44,33 @@ Span* CentralCache::GetOneSpan(size_t size)
 size_t CentralCache::FetchRangeObj(void*& start, void*& end, size_t num, size_t size)
 {
 	//获取一个有对象的span
+	size_t index = Sizeclass::ListIndex(size);
+	SpanList& spanlist = _spanlists[index];
+	spanlist.Lock();//加互斥锁
+
+	//获取一个有对象的span
 	Span* span = GetOneSpan(size); 
 	FreeList& freelist = span->_freelist;
 	size_t actuallNum = freelist.PopRange(start, end, num);
 	span->_usecount += actuallNum;
+
+	spanlist.UnLock();
 	return actuallNum;
 }
 
 //当内存对象释放够一定数量时，就将其归还到span
 //单个大小为size,start指向归还的内存对象的开始
-void CentralCache::ReleaseListToSpans(void* start)
+void CentralCache::ReleaseListToSpans(void* start,size_t size)
 {
+
+	size_t index = Sizeclass::ListIndex(size);
+	SpanList& spanlist = _spanlists[index];
+	spanlist.Lock();
 	while (start)
 	{
 		void* next = NextObj(start);
-		PAGE_ID id = (PAGE_ID)start << PAGE_SHIFT;
-		Span* span = pagecaCheInst.GetIdToSpan(id);
+		PAGE_ID id = (PAGE_ID)start >> PAGE_SHIFT;
+		Span* span = Pagecache::GetInstance().GetIdToSpan(id);
 		span->_freelist.Push(start);
 		span->_usecount--;
 		//表示当前span切出去的内存对象全部返回，可以将span还给page cache，进行合并，减少内存碎片。
@@ -69,10 +80,11 @@ void CentralCache::ReleaseListToSpans(void* start)
 			_spanlists[index].Erase(span);
 			span->_freelist.Clear();
 
-			pagecaCheInst.ReleaseSpanToPageCache(span);
+			Pagecache::GetInstance().ReleaseSpanToPageCache(span);
 		}
 		start = next;
 	}
+	spanlist.UnLock();
 }
 
 
