@@ -678,28 +678,132 @@ void ListCreat_Tail(List* phead)
 //    return 0;
 //}
 
+//#include<iostream>
+//#include<unordered_map>
+//#include<unordered_set>
+//#include<string>
+//using namespace std;
+//
+//char firstUniqChar(string s) {
+//    unordered_set<char, int> mp;
+//    for (auto e : s)
+//    {
+//        mp.insert(make_pait(e,1));
+//    }
+//    for (auto it : mp)
+//    {
+//        if (it.second == 1)
+//            return it.first;
+//    }
+//    return ' ';
+//}
+//int main()
+//{
+//    string s = "leetcode";
+//    cout << firstUniqChar(s) << endl;
+//    return 0;
+//}
+
+//#include<iostream>
+//#include<string>
+//using namespace std;
+//string reverseWords(string s) {
+//    if (s.size() == 0)
+//        return "";
+//    //1.先反转整个字符串
+//    reverse(s.begin(), s.end());
+//    //2.再反转每个单词
+//    for (int i = 0; i < s.size(); ++i)
+//    {
+//        while (i < s.size() && s[i] == ' ')
+//        {
+//            s.erase(i, 1);
+//        }
+//        int j = i;
+//        while (j < s.size() && s[j] != ' ')
+//            ++j;
+//        reverse(s.begin() + i, s.begin() + j);
+//        i = j;
+//    }
+//    if (s.size() > 0 && s[s.size() - 1] == ' ')
+//        s.erase(s.size() - 1, 1);
+//    return s;
+//}
+//
+//int main()
+//{
+//    string s = "     ";
+//    reverseWords(s);
+//    return 0;
+//}
 #include<iostream>
-#include<unordered_map>
-#include<unordered_set>
-#include<string>
+#include<vector>
+#include<deque>
 using namespace std;
 
-char firstUniqChar(string s) {
-    unordered_set<char, int> mp;
-    for (auto e : s)
+//vector<int> fun(vector<int>& nums, int k)
+//{
+//    vector<int> res;
+//    deque<int> q;
+//    for (int i = 0; i < nums.size(); ++i)
+//    {
+//        while (q.size() && q.front() < i - k)//保持队列里只有k个元素
+//            q.pop_front();
+//        while (q.size() && q.back() <= nums[i])
+//            q.pop_back();
+//        q.push_back(i);
+//        if ((i > k - 1))
+//            res.push_back(nums[q.front()]);
+//    }
+//    return res;
+//}
+//int main()
+//{
+//    vector<int> nums = {1,3,-1,-3,5,3,6,7};
+//    int k = 3;
+//    fun(nums, k);
+//    return 0;
+//}
+
+//int change(int amount, vector<int>& coins) {
+//    int n = coins.size();
+//    vector<vector<int>> dp(n + 1, vector<int>(amount + 1, 0));
+//    for (int i = 0; i <= n; ++i)
+//        dp[i][0] = 1;
+//    for (int i = 0; i < n; ++i)
+//    {
+//        for (int j = 1; j <= amount; ++j)
+//        {
+//            if (j >= coins[i])
+//                dp[i][j] = dp[i - 1][j] + dp[i][j - coins[i]];
+//            else
+//                dp[i][j] = dp[i - 1][j];//不选择当前硬币
+//        }
+//    }
+//    return dp[n][amount];
+//}
+int lengthOfLIS(vector<int>& nums) {
+    int n = nums.size();
+    if (n <= 1)
+        return n;
+    vector<int> dp;
+    dp.push_back(nums[0]);
+    for (int i = 1; i < n; ++i)
     {
-        mp.insert(make_pait(e,1));
+        if (dp.back() < nums[i])
+            dp.push_back(nums[i]);
+        else
+        {
+            auto it = lower_bound(dp.begin(), dp.end(), nums[i]);
+            *it = nums[i];
+        }
     }
-    for (auto it : mp)
-    {
-        if (it.second == 1)
-            return it.first;
-    }
-    return ' ';
+    return dp.size();
 }
+
 int main()
 {
-    string s = "leetcode";
-    cout << firstUniqChar(s) << endl;
+    vector<int> coins = { 10,9,2,5,3,7,101,18 };
+    cout << lengthOfLIS(coins)<< endl;
     return 0;
 }
